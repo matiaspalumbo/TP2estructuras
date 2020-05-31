@@ -11,7 +11,8 @@ typedef struct _ITNodo {
 
 typedef ITNodo* ITree;
 
-int comp_intervalos(int izq1, int izq2) {
-  return izq1 - izq2;
+int intersecar(ITree int1, ITree int2) {
+  return (int1->izq <= int2->izq) && (int1->der >= int2->izq) || 
+  (int2->izq <= int1->izq) && (int2->der >= int1->izq);
 }
 
