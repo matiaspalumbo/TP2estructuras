@@ -3,8 +3,8 @@
 
 
 typedef struct _ITNodo {
-  int izq, der;
-  int max, altura;
+  double izq, der, max;
+  int altura;
   struct _ITNodo* right;
   struct _ITNodo* left;
 } ITNodo;
@@ -30,16 +30,16 @@ void itree_destruir(ITree nodo);
  */
 int itree_empty(ITree nodo);
 
-ITree itree_insertar(ITree nodo, int extIzq, int extDer);
+ITree itree_insertar(ITree nodo, double extIzq, double extDer);
 
-ITree itree_eliminar(ITree nodo, int izq, int der);
+ITree itree_eliminar(ITree nodo, double izq, double der);
 
 int itree_altura_factor(ITree arbol);
 
 /**
  * Recorrido del arbol, utilizando la funcion pasada.
  */
-int itree_contiene(ITree arbol, int dato);
+int itree_contiene(ITree arbol, double dato);
 
 /**
  * Recorrido del arbol, utilizando la funcion pasada.
@@ -48,12 +48,10 @@ void itree_recorrer(ITree arbol, FuncionVisitante visit);
 
 int itree_altura(ITree nodo);
 
-int itree_altura(ITree nodo);
-
 void itree_imprimir(ITree arbol);
 
-int itree_minimo(ITree arbol);
+void pretty_print(ITree nodo);
 
-int itree_acceder(ITree arbol, int pos);
+int itree_minimo(ITree arbol);
 
 #endif /* __ITREE_H__ */
