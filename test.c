@@ -25,8 +25,19 @@ int main() {
   // printf("Nodo a eliminar: %d\n", nums[(N_TO_PRINT-1)/2]);
   // raiz = avltree_eliminar(raiz,3);
   // avltree_imprimir(raiz);
+raiz = itree_insertar(raiz, 1, 5);
+itree_imprimir(raiz);
+raiz = itree_insertar(raiz, 2, 4);
+itree_imprimir(raiz);
+raiz = itree_insertar(raiz, 10, 15);
+itree_imprimir(raiz);
+raiz = itree_insertar(raiz, 0, 8);
+itree_imprimir(raiz);
+raiz = itree_insertar(raiz, 7, 9);
+itree_imprimir(raiz);
 
-  
+  itree_destruir(raiz);
+
 
 
 
