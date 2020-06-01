@@ -231,7 +231,7 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
 
 
 
-void itree_recorrer_dfs_aux(ITree arbol, FuncionVisitante visit) {
+void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {
   if (!itree_empty(arbol)) {
     itree_recorrer_dfs_aux(arbol->left, visit);
     visit(arbol);
@@ -239,15 +239,23 @@ void itree_recorrer_dfs_aux(ITree arbol, FuncionVisitante visit) {
   }
 }
 
-void imprimir_entero(ITree nodo) {
-  if (nodo) printf("[%lf, %lf]  ", nodo->izq, nodo->der);
-  else printf("NULL");
+void btree_recorrer_bfs(ITree arbol, FuncionVisitante visit) {
+  if (!itree_empty(arbol)) {
+    TCola q = cola_crear();
+    enqueue(q, arbol);
+    BTNodo *temp;
+    while (!cola_es_vacia(q)) {
+      temp = cola_primero(q);
+      dequeue(q);
+      visit(temp->dato);
+      if (!btree_empty(temp->left)) enqueue(q, temp->left);
+      if (!btree_empty(temp->right)) enqueue(q, temp->right);
+    }
+    cola_destruir(q);
+  }
 }
 
-void itree_recorrer_dfs(ITree arbol) {
-  itree_recorrer_dfs_aux(arbol, imprimir_entero);
-  puts("");
-}
+
 
 // void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit) {
 
