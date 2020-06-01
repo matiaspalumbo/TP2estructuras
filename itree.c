@@ -153,7 +153,6 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
   if (itree_empty(nodo))
     return nodo;
   else if (nodo->izq == izq && nodo->der == der) {
-printf("--0-- %0.2f\n", nodo->izq);
     if (!nodo->left && !nodo->right) {
       free(nodo);
       nodo = NULL;
@@ -171,16 +170,13 @@ printf("--0-- %0.2f\n", nodo->izq);
       nodo = hijoNoNULL;
     }
   } else if (nodo->izq > izq) {
-printf("--1-- %0.2f\n", nodo->izq);
     nodo->left = itree_eliminar(nodo->left, izq, der);
   } else { 
-printf("--2-- %0.2f\n", nodo->izq);
     nodo->right = itree_eliminar(nodo->right, izq, der);
   }
   
   if (!nodo)
     return nodo;
-// printf("Nodo: %d - L: %d - R: %d\n", nodo->izq, itree_altura(nodo->right), itree_altura(nodo->left));
   nodo->altura = 1 + (int) maximo((double) itree_altura(nodo->left), (double) itree_altura(nodo->right));
 
   int balance = itree_balance_factor(nodo);
@@ -242,7 +238,8 @@ void itree_recorrer(ITree arbol, FuncionVisitante visit) {
 
 
 void imprimir_entero(ITree nodo) {
-  printf("[%0.0f, %0.0f]{%0.0f}(%d)   ", nodo->izq, nodo->der, nodo->max, itree_altura(nodo));
+  if (nodo) printf("[%0.0f, %0.0f]{%0.0f}(%d)   ", nodo->izq, nodo->der, nodo->max, itree_altura(nodo));
+  else printf("NULL");
 }
 
 void itree_imprimir(ITree arbol) {
@@ -319,15 +316,26 @@ será menor que la raíz, la cual a su vez será menor que la raíz del subárbo
 
 
 ITree itree_intersecar(ITree arbol, double izq, double der) {
+  printf("intersecar [%.2f, %.2f] con ", izq, der); imprimir_entero(arbol); puts("");
   ITree interseccion = NULL;
-  if (der < arbol->izq) {
-    if (izq <= arbol->left->max)
-      interseccion = itree_intersecar(arbol->left, izq, der);
-  } else if (izq > arbol->der) {
-    if (izq <= arbol->left->max)
-      interseccion = itree_intersecar(arbol->right, izq, der);
-  } else
-    interseccion = arbol;
+  if (arbol) {
+    if (der < arbol->izq) {
+      puts("0");
+      if (arbol->left && izq <= arbol->left->max) {
+        puts("0.1");
+        interseccion = itree_intersecar(arbol->left, izq, der);
+      }
+    } else if (izq > arbol->der) {
+      puts("1");
+      if (arbol->right && izq <= arbol->right->max) {
+        puts("1.1");
+        interseccion = itree_intersecar(arbol->right, izq, der);
+      }
+    } else {
+      puts("2");
+      interseccion = arbol;
+    }
+  }
 
   return interseccion;
 }

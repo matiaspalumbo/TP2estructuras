@@ -30,11 +30,11 @@ void itree_destruir(ITree nodo);
  */
 int itree_empty(ITree nodo);
 
-ITree itree_insertar(ITree nodo, double extIzq, double extDer);
+ITree itree_insertar(ITree arbol, double izq, double der);
 
 ITree itree_eliminar(ITree nodo, double izq, double der);
 
-int itree_altura_factor(ITree arbol);
+int itree_balance_factor(ITree arbol);
 
 /**
  * Recorrido del arbol, utilizando la funcion pasada.
@@ -50,10 +50,12 @@ int itree_altura(ITree nodo);
 
 void itree_imprimir(ITree arbol);
 
+void imprimir_entero(ITree nodo);
+
 void pretty_print(ITree nodo);
 
 int itree_minimo(ITree arbol);
 
-ITree itree_insertar(ITree arbol, double izq, double der);
+ITree itree_intersecar(ITree arbol, double izq, double der);
 
 #endif /* __ITREE_H__ */
