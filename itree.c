@@ -324,31 +324,16 @@ será menor que la raíz, la cual a su vez será menor que la raíz del subárbo
 
 
 ITree itree_intersecar(ITree arbol, double izq, double der) {
-  // printf("intersecar [%.2f, %.2f] con ", izq, der); imprimir_entero(arbol); puts("");
   ITree interseccion = NULL;
   if (arbol) {
     if (der < arbol->izq) {
-      // puts("0");
-      if (arbol->left && izq <= arbol->left->max) {
+      if (arbol->left && izq <= arbol->left->max)
         interseccion = itree_intersecar(arbol->left, izq, der);
-      }
     } else if (izq > arbol->der) {
-      if (arbol->right && izq <= arbol->right->max) {
-        interseccion = itree_intersecar(arbol->right, izq, der);
-      }
-    } 
-
-
-
-
-    } else if (arbol->left && izq > arbol->left->max) {
-      // puts("1");
-      if (arbol->right && izq <= arbol->right->max) {
-        // puts("1.1");
-        interseccion = itree_intersecar(arbol->right, izq, der);
-      }
+      if (arbol->left && izq <= arbol->left->max)
+        interseccion = itree_intersecar(arbol->left, izq, der);
+      else interseccion = itree_intersecar(arbol->right, izq, der);
     } else {
-      // puts("2");
       interseccion = arbol;
     }
   }
