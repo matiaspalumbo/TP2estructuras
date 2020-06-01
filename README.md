@@ -1,4 +1,35 @@
-# TP2estructuras
+void imprimir_enum(enum EstadoInput estado) {
+  switch (estado) {
+    case NoValido: puts("NoValido"); break;
+    case Salir: puts("Salir"); break;
+    case RecorridoBFS: puts("RecorridoBFS"); break;
+    case RecorridoDFS: puts("RecorridoDFS"); break;
+    case Insertar: puts("Insertar"); break;
+    case Eliminar: puts("Eliminar"); break;
+    case Intersecar: puts("Intersecar"); break;
+  }
+}
+
+/* validar_input: (hacer enum para diferentes casos)
+[SI EL INTERVALO ES VÁLIDO QUE YA LO ALMACENE?]
+- igual a "salir"
+- igual a "bfs"
+- igual a "dfs"
+Sino, debe verificar que:
+- 1er char == 'i', 'e', '?'
+- 2do char == ' '
+- 3er char == '['
+- después de eso, viene un número que puede o no tener punto en el medio (contador de puntos)? (funcion auxiliar que escanee numeros?)
+- 1er char después del num. == ','
+- 2do char después del num. == ' '
+- después, viene otro número que puede o no tener punto en el medio
+- 1er char después del segundo num. == ']'
+- 2do char después del segundo num. == '\n'
+*/# TP2estructuras
+
+
+
+
 
 
 
