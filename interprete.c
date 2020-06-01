@@ -159,7 +159,7 @@ void interface() {
           puts("Si");
       break;
       default:;
-        // puts("Intervalo no valido.");
+        puts("Intervalo no valido.");
     }
   } while  (estado != Salir);
   free(input);
