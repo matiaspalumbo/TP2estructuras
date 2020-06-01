@@ -120,6 +120,8 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
       }
     }
     free(buff);
+    if ((estado == Insertar || estado == Eliminar || estado == Intersecar) && (*izq) > (*der))
+      estado = NoValido;
     return (estado == Salir) ? NoValido : estado;
   }
 }
@@ -142,7 +144,7 @@ void interface() {
       break;
       case RecorridoDFS:
         itree_recorrer_dfs(arbol);
-        pretty_print(arbol);
+        // pretty_print(arbol);
       break;
       case Insertar:
         arbol = itree_insertar(arbol, izq, der);
