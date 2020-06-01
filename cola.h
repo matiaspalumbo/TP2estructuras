@@ -30,10 +30,10 @@ int cola_es_vacia(Cola cola);
 void* cola_primero(Cola cola);
 
 // Toma una cola y un elemento y agrega el elemento al fin de la cola.
-void cola_encolar(Cola cola, void* dato);
+void enqueue(Cola cola, void* dato);
 
 // Toma una cola y elimina su primer elemento.
-void cola_desencolar(Cola cola);
+void dequeue(Cola cola);
 
 // Toma una cola y la imprime en orden.
 void cola_imprimir(Cola cola, FuncionImpresora imprimir);

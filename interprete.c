@@ -141,9 +141,11 @@ void interface() {
     switch(estado) {
       case RecorridoBFS:
         // itree_recorrer_bfs(arbol, imprimir_intervalo);
+        // puts("");
       break;
       case RecorridoDFS:
-        itree_recorrer_dfs(arbol);
+        itree_recorrer_dfs(arbol, imprimir_intervalo);
+        puts("");
         // pretty_print(arbol);
       break;
       case Insertar:
