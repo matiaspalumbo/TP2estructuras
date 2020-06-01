@@ -117,34 +117,37 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
     nodo->right = NULL;
     nodo->altura = 0;
     nodo->max = nodo->der;
+    // printf("0 %lf, %lf\n", nodo->izq, nodo->der);
     return nodo;
-  } else if (nodo->izq > izq)
+  } else if (nodo->izq > izq || (nodo->izq == izq && nodo->der != der)) {
     nodo->left = itree_insertar(nodo->left, izq, der);
-  else if (nodo->izq < izq)
+  }
+  else if (nodo->izq < izq) {
     nodo->right = itree_insertar(nodo->right, izq, der);
-  else
+  }
+  else {
     return nodo;
+  }
 
   nodo->altura = 1 + (int) maximo((double) itree_altura(nodo->left), (double) itree_altura(nodo->right));
   nodo->max = calcular_max(nodo);
 
   int balance = itree_balance_factor(nodo);
   if (balance < -1 && izq > nodo->right->izq) {
-    printf("Izq Izq: %0.2f\n", nodo->izq);
+    printf("Izq Izq: %lf\n", nodo->izq);
     nodo = rotacion_a_izquierda(nodo);
-  } else if (balance > 1 && izq < nodo->left->izq) {
-    printf("Der Der: %0.2f\n", nodo->izq);
+  } else if (balance > 1 && izq <= nodo->left->izq) {
+    printf("Der Der: %lf\n", nodo->izq);
     nodo = rotacion_a_derecha(nodo);
   } else if (balance < -1) {
-    printf("Der Izq: %0.2f\n", nodo->izq);
+    printf("Der Izq: %lf\n", nodo->izq);
     nodo->right = rotacion_a_derecha(nodo->right);
     nodo = rotacion_a_izquierda(nodo);
   } else if (balance > 1) {
-    printf("Izq Der: %0.2f\n", nodo->izq);
+    printf("Izq Der: %lf\n", nodo->izq);
     nodo->left = rotacion_a_izquierda(nodo->left);
     nodo = rotacion_a_derecha(nodo);
   }
-  
   return nodo;
 }
 
@@ -228,27 +231,29 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
 
 
 
-void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {
+void itree_recorrer_dfs_aux(ITree arbol, FuncionVisitante visit) {
   if (!itree_empty(arbol)) {
-    itree_recorrer_dfs(arbol->left, visit);
+    itree_recorrer_dfs_aux(arbol->left, visit);
     visit(arbol);
-    itree_recorrer_dfs(arbol->right, visit);
+    itree_recorrer_dfs_aux(arbol->right, visit);
   }
+}
+
+void imprimir_entero(ITree nodo) {
+  if (nodo) printf("[%lf, %lf]  ", nodo->izq, nodo->der);
+  else printf("NULL");
+}
+
+void itree_recorrer_dfs(ITree arbol) {
+  itree_recorrer_dfs_aux(arbol, imprimir_entero);
+  puts("");
 }
 
 // void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit) {
 
 // }
 
-void imprimir_entero(ITree nodo) {
-  if (nodo) printf("[%0.0f, %0.0f]{%0.0f}(%d)   ", nodo->izq, nodo->der, nodo->max, itree_altura(nodo));
-  else printf("NULL");
-}
 
-void itree_imprimir(ITree arbol) {
-  itree_recorrer_dfs(arbol, imprimir_entero);
-  puts("");
-}
 
 void pretty_print_aux(ITree nodo, int space) { 
   if (itree_empty(nodo)) 

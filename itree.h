@@ -44,7 +44,7 @@ int itree_contiene(ITree arbol, double dato);
 /**
  * Recorrido del arbol, utilizando la funcion pasada.
  */
-void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit);
+void itree_recorrer_dfs(ITree arbol);
 
 // void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit);
 
