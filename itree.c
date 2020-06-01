@@ -228,14 +228,17 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
 
 
 
-void itree_recorrer(ITree arbol, FuncionVisitante visit) {
+void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {
   if (!itree_empty(arbol)) {
-    itree_recorrer(arbol->left, visit);
+    itree_recorrer_dfs(arbol->left, visit);
     visit(arbol);
-    itree_recorrer(arbol->right, visit);
+    itree_recorrer_dfs(arbol->right, visit);
   }
 }
 
+// void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit) {
+
+// }
 
 void imprimir_entero(ITree nodo) {
   if (nodo) printf("[%0.0f, %0.0f]{%0.0f}(%d)   ", nodo->izq, nodo->der, nodo->max, itree_altura(nodo));
@@ -243,7 +246,7 @@ void imprimir_entero(ITree nodo) {
 }
 
 void itree_imprimir(ITree arbol) {
-  itree_recorrer(arbol, imprimir_entero);
+  itree_recorrer_dfs(arbol, imprimir_entero);
   puts("");
 }
 
@@ -316,23 +319,23 @@ será menor que la raíz, la cual a su vez será menor que la raíz del subárbo
 
 
 ITree itree_intersecar(ITree arbol, double izq, double der) {
-  printf("intersecar [%.2f, %.2f] con ", izq, der); imprimir_entero(arbol); puts("");
+  // printf("intersecar [%.2f, %.2f] con ", izq, der); imprimir_entero(arbol); puts("");
   ITree interseccion = NULL;
   if (arbol) {
     if (der < arbol->izq) {
-      puts("0");
+      // puts("0");
       if (arbol->left && izq <= arbol->left->max) {
-        puts("0.1");
+        // puts("0.1");
         interseccion = itree_intersecar(arbol->left, izq, der);
       }
     } else if (izq > arbol->der) {
-      puts("1");
+      // puts("1");
       if (arbol->right && izq <= arbol->right->max) {
-        puts("1.1");
+        // puts("1.1");
         interseccion = itree_intersecar(arbol->right, izq, der);
       }
     } else {
-      puts("2");
+      // puts("2");
       interseccion = arbol;
     }
   }

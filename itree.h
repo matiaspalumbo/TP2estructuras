@@ -5,8 +5,8 @@
 typedef struct _ITNodo {
   double izq, der, max;
   int altura;
-  struct _ITNodo* right;
-  struct _ITNodo* left;
+  struct _ITNodo *right;
+  struct _ITNodo *left;
 } ITNodo;
 
 typedef ITNodo* ITree;
@@ -44,7 +44,9 @@ int itree_contiene(ITree arbol, double dato);
 /**
  * Recorrido del arbol, utilizando la funcion pasada.
  */
-void itree_recorrer(ITree arbol, FuncionVisitante visit);
+void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit);
+
+// void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit);
 
 int itree_altura(ITree nodo);
 
