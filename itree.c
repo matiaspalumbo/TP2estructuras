@@ -340,10 +340,10 @@ ITree itree_intersecar(ITree arbol, double izq, double der) {
     } else if (izq > arbol->der) {
       if (arbol->left && izq <= arbol->left->max)
         interseccion = itree_intersecar(arbol->left, izq, der);
-      else interseccion = itree_intersecar(arbol->right, izq, der);
-    } else {
-      interseccion = arbol;
-    }
+      else 
+        interseccion = itree_intersecar(arbol->right, izq, der);
+    } else
+        interseccion = arbol;
   }
 
   return interseccion;
