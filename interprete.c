@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define STR_SIZE 25
+#define STR_SIZE 100
 
 void imprimir_intervalo(ITree arbol) {
   if (!itree_empty(arbol)) printf("[%lf, %lf] ", arbol->izq, arbol->der);
@@ -19,10 +19,10 @@ void imprimir_intervalo(ITree arbol) {
 void interface() {
   char *input = malloc(sizeof(char) * STR_SIZE);
   ITree arbol = itree_crear();
-  double izq, der;
+  double izq, der=0.0;
   char buff[4];
   
-  scanf("%24s", input);
+  fgets(input, 1000, stdin);
   while (strcmp(input, "salir") != 0) {
     if (strcmp(input, "bfs") == 0) {
     //   itree_recorrer_bfs(arbol, imprimir_intervalo);
@@ -31,7 +31,10 @@ void interface() {
       itree_recorrer_dfs(arbol, imprimir_entero);
       puts("");
     } else {
-      sscanf(input, "%2s%lf, %lf]", buff, &izq, &der);
+      printf("%s\n", input);
+      sscanf(input, "%[^[][%lf, %lf]", buff, &izq, &der);
+      printf("%s\n", buff);
+      printf("[%lf, %lf]\n", izq, der);
       if (izq <= der) {
         if (input[0] == 'i') arbol = itree_insertar(arbol, izq, der);
         else if (input[0] == 'e') arbol = itree_eliminar(arbol, izq, der);
@@ -41,7 +44,7 @@ void interface() {
         }
       } else puts("Intervalo no valido.");
     }
-    scanf("%24s", input);
+    fgets(input, 1000, stdin);
   }
   
   free(input);
