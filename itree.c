@@ -316,3 +316,18 @@ La búsqueda inorder es la que permite recorrer los elementos en forma
 ordenada. Esto se debe a que siempre, en un árbol dado, la raíz del subárbol izquierdo
 será menor que la raíz, la cual a su vez será menor que la raíz del subárbol derecho.
 */
+
+
+ITree itree_intersecar(ITree arbol, double izq, double der) {
+  ITree interseccion = NULL;
+  if (der < arbol->izq) {
+    if (izq <= arbol->left->max)
+      interseccion = itree_intersecar(arbol->left, izq, der);
+  } else if (izq > arbol->der) {
+    if (izq <= arbol->left->max)
+      interseccion = itree_intersecar(arbol->right, izq, der);
+  } else
+    interseccion = arbol;
+
+  return interseccion;
+}

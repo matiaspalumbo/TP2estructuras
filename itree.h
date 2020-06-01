@@ -54,4 +54,6 @@ void pretty_print(ITree nodo);
 
 int itree_minimo(ITree arbol);
 
+ITree itree_insertar(ITree arbol, double izq, double der);
+
 #endif /* __ITREE_H__ */
