@@ -333,7 +333,16 @@ ITree itree_intersecar(ITree arbol, double izq, double der) {
         // puts("0.1");
         interseccion = itree_intersecar(arbol->left, izq, der);
       }
-    } else if (izq > arbol->izq->max) {
+    } else if (izq > arbol->der) {
+      if (arbol->right && izq <= arbol->right->max) {
+        interseccion = itree_intersecar(arbol->right, izq, der);
+      }
+    }
+
+
+
+
+    } else if (arbol->left && izq > arbol->left->max) {
       // puts("1");
       if (arbol->right && izq <= arbol->right->max) {
         // puts("1.1");
