@@ -3,21 +3,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define STR_SIZE 30
+#define STR_SIZE 25
 
 void imprimir_intervalo(double izq, double der) {
-  printf("[%f, %f] ", izq, der);
+  printf("[%0.2f, %0.2f] ", izq, der);
 }
 
-void leer_intervalo(char *string, int *izq, int *der) {
+int leer_intervalo(char *string, int *izq, int *der) {
   char buff[4];
-  sscanf(string, "%[^[]%d, %d]", buff, *izq, *der);
+  sscanf(string, "%[^[]%f, %f]", buff, *izq, *der);
+  return (*izq <= *der);
 }
 
-int main() {
+void interface() {
   char *input = malloc(sizeof(char) * STR_SIZE);
   ITree arbol = itree_crear();
-  ITree aux;
+  double izq, der;
   
   scanf(input);
   while (strcmp(input, "salir") != 0) {
@@ -28,21 +29,23 @@ int main() {
       itree_recorrer_dfs(arbol, imprimir_intervalo);
       puts("");
     } else {
-      double izq, der;
-      leer_intervalo(input, &izq, &der);
-      if (input[0] == 'i') arbol = itree_insertar(arbol, izq, der);
-      else if (input[0] == 'e') arbol = itree_eliminar(arbol, izq, der);
-      else if (input[0] == '?') {
-        aux = itree_intersecar(arbol, izq, der);
-        if (aux == NULL) puts("Si");
-        else puts("No");
-      }
+      if (leer_intervalo(input, &izq, &der)) {
+        if (input[0] == 'i') arbol = itree_insertar(arbol, izq, der);
+        else if (input[0] == 'e') arbol = itree_eliminar(arbol, izq, der);
+        else if (input[0] == '?') {
+        if (itree_intersecar(arbol, izq, der) == NULL) puts("No\n");
+        else puts("Si\n");
+        }
+      } else puts("Intervalo no valido.\n");
     }
     scanf(input);
   }
   
   free(input);
   itree_destruir(arbol);
+}
 
+int main() {
+  interface();
   return 0;
 }
