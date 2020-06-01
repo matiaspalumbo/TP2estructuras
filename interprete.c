@@ -19,10 +19,10 @@ void imprimir_intervalo(ITree arbol) {
 void interface() {
   char *input = malloc(sizeof(char) * STR_SIZE);
   ITree arbol = itree_crear();
-  double izq, der=0.0;
+  double izq, der;
   char buff[4];
   
-  fgets(input, 1000, stdin);
+  fgets(input, STR_SIZE, stdin);
   while (strcmp(input, "salir") != 0) {
     if (strcmp(input, "bfs") == 0) {
     //   itree_recorrer_bfs(arbol, imprimir_intervalo);
@@ -44,7 +44,7 @@ void interface() {
         }
       } else puts("Intervalo no valido.");
     }
-    fgets(input, 1000, stdin);
+    fgets(input, STR_SIZE, stdin);
   }
   
   free(input);
