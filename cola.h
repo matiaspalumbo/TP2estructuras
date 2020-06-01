@@ -2,22 +2,24 @@
 #define __SCOLA_H__
 
 #include <stddef.h>
+#include "itree.h"
 
-typedef struct _ColaSNodo {
-  void* dato;
-  struct _ColaSNodo *sig;
-} ColaSNodo;
+/* Implementación de la estructura Cola usando nodos simplemente enlazados donde 
+el tipo de dato es un Arbol de Intervalos, y una estructura auxiliar con el primer 
+y último elemento. */
+/* primero: indica el índice de la posición del primer elemento de la cola, es decir, la posición del elemento a eliminar cuando se invoque desencolar; 
+ultimo: indica el índice de la posición de último elemento de la cola, ie, si se invoca encolar, el elemento debe ser insertado en el casillero siguiente al que indica la variable. */
 
-/* Se representarán colas mediante listas enlazadas y una estructura auxiliar
-con el primer y último elemento. El primer elemento de la cola es el final de 
-la lista, y el último elemento es el principio. */
+
+typedef struct _CNodo {
+  ITNodo *dato;
+  struct _CNodo *sig;
+} CNodo;
 
 typedef struct _Cola {
-	ColaSNodo* primero;
-	ColaSNodo* ultimo;
+  CNodo *primero;
+  CNodo *ultimo;
 } *Cola;
-
-typedef void (*FuncionImpresora) (void* dato);
 
 
 // Crea una nueva cola.
@@ -27,20 +29,16 @@ Cola cola_crear();
 int cola_es_vacia(Cola cola);
 
 // Toma una cola y devuelve el elemento en la primera posición.
-void* cola_primero(Cola cola);
+ITNodo *cola_primero(Cola cola);
 
 // Toma una cola y un elemento y agrega el elemento al fin de la cola.
-void enqueue(Cola cola, void* dato);
+void cola_encolar(Cola cola, ITNodo *dato);
 
 // Toma una cola y elimina su primer elemento.
-void dequeue(Cola cola);
-
-// Toma una cola y la imprime en orden.
-void cola_imprimir(Cola cola, FuncionImpresora imprimir);
+void cola_desencolar(Cola cola);
 
 // Libera la memoria requerida para la cola.
 void cola_destruir(Cola cola);
-
 
 
 #endif /* __SCOLA_H__ */

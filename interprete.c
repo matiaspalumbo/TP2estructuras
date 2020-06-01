@@ -1,14 +1,11 @@
-#include "itree.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include "itree.h"
+#include "cola.h"
 
 #define STR_SIZE 100
-
-void imprimir_intervalo(ITree arbol) {
-  if (!itree_empty(arbol)) printf("[%lf, %lf] ", arbol->izq, arbol->der);
-}
 
 
 // int leer_intervalo(char *string, char buff[], double **izq, double **der) {
@@ -127,8 +124,6 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
 }
 
 
-// Cambiar las funciones que recorren para que directamente impriman!!!
-
 void interface() {
   char *input = malloc(sizeof(char) * STR_SIZE);
   ITree arbol = itree_crear();
@@ -140,8 +135,8 @@ void interface() {
     // imprimir_enum(estado);
     switch(estado) {
       case RecorridoBFS:
-        // itree_recorrer_bfs(arbol, imprimir_intervalo);
-        // puts("");
+        itree_recorrer_bfs(arbol, imprimir_intervalo);
+        puts("");
       break;
       case RecorridoDFS:
         itree_recorrer_dfs(arbol, imprimir_intervalo);

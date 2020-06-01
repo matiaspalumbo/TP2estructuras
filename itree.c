@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
-// #include "../Implementaciones/Pilas/pila.h"
 #include "itree.h"
+#include "cola.h"
 
 
 ITree itree_crear() {
@@ -63,19 +63,6 @@ double calcular_max(ITNodo* nodo) {
     return nodo->der;
 }
 
-
-// int itree_altura(ITree nodo) {
-//   if (itree_empty(nodo))
-//     return -1;
-//   else {
-//     int alturaLeft = 0, alturaRight = 0;
-//     alturaLeft = 1 + itree_altura(nodo->left);
-//     alturaRight = 1 + itree_altura(nodo->right);
-//     return maximo(alturaLeft, alturaRight);
-//   }
-// }
-
-
 int itree_altura(ITree nodo) {
   return (itree_empty(nodo)) ? -1 : nodo->altura;
 }
@@ -107,6 +94,7 @@ ITree rotacion_a_izquierda(ITree nodo) {
   nuevaRaiz->max = calcular_max(nuevaRaiz);
   return nuevaRaiz;
 }
+
 
 ITree itree_insertar(ITree nodo, double izq, double der) {
   if (itree_empty(nodo)) {
@@ -210,7 +198,6 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
 //   return (nodo->dato > dato) ? itree_contiene(nodo->left, dato) : itree_contiene(nodo->right, dato);
 // }
 
-
 // void itree_recorrer_extra(ITree arbol, FuncionVisitanteExtra visit, void *extra) {
 //   if (!itree_empty(arbol)) {
 //     visit(arbol, extra);
@@ -230,36 +217,33 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
 // }
 
 
+void imprimir_intervalo(ITree arbol) {
+  if (!itree_empty(arbol)) printf("[%lf, %lf] ", arbol->izq, arbol->der);
+}
 
 void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {
   if (!itree_empty(arbol)) {
-    itree_recorrer_dfs_aux(arbol->left, visit);
+    itree_recorrer_dfs(arbol->left, visit);
     visit(arbol);
-    itree_recorrer_dfs_aux(arbol->right, visit);
+    itree_recorrer_dfs(arbol->right, visit);
   }
 }
 
-void btree_recorrer_bfs(ITree arbol, FuncionVisitante visit) {
+void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit) {
   if (!itree_empty(arbol)) {
-    TCola q = cola_crear();
-    enqueue(q, arbol);
-    BTNodo *temp;
-    while (!cola_es_vacia(q)) {
-      temp = cola_primero(q);
-      dequeue(q);
-      visit(temp->dato);
-      if (!btree_empty(temp->left)) enqueue(q, temp->left);
-      if (!btree_empty(temp->right)) enqueue(q, temp->right);
+    Cola queue = cola_crear();
+    cola_encolar(queue, arbol);
+    ITNodo *temp;
+    while (!cola_es_vacia(queue)) {
+      temp = cola_primero(queue);
+      cola_desencolar(queue);
+      visit(temp);
+      if (!itree_empty(temp->left)) cola_encolar(queue, temp->left);
+      if (!itree_empty(temp->right)) cola_encolar(queue, temp->right);
     }
-    cola_destruir(q);
+    cola_destruir(queue);
   }
 }
-
-
-
-// void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit) {
-
-// }
 
 
 
@@ -308,27 +292,6 @@ int itree_minimo(ITree arbol) {
 //   }
 //   return dato;
 // }
-
-
-/* 
-FINAL EJ. 7
-Al agregar varios elementos, el árbol resultante tendrá forma de lista 
-solo si los elementos fueron agregados en forma ascendente o descendente.
-Es decir, si los elementos son agregados ascendentemente, no existirán 
-subárboles izquierdos, y si son agregados descendentemente, no existirán
-subárboles derechos.
-
-Al buscar un nodo en esa lista, se visitarán los nodos de forma consecutiva
-hasta encontrarlo o hasta verificar que no está. Esto es, con los nodos
-ordenados ascendentemente, si el elemento a buscar es menor al nodo actual, y
-si es mayor en caso contrario.
-
-
-EJ. 8
-La búsqueda inorder es la que permite recorrer los elementos en forma
-ordenada. Esto se debe a que siempre, en un árbol dado, la raíz del subárbol izquierdo
-será menor que la raíz, la cual a su vez será menor que la raíz del subárbol derecho.
-*/
 
 
 ITree itree_intersecar(ITree arbol, double izq, double der) {

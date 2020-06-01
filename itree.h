@@ -13,7 +13,6 @@ typedef ITNodo* ITree;
 
 typedef void (*FuncionVisitante) (ITree arbol);
 
-typedef void (*FuncionVisitanteExtra) (ITree dato, void *extra);
 
 /**
  * Devuelve un arbol vacío.
@@ -46,13 +45,13 @@ int itree_contiene(ITree arbol, double dato);
  */
 void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit);
 
-// void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit);
+void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit);
 
 int itree_altura(ITree nodo);
 
 void itree_imprimir(ITree arbol);
 
-void imprimir_entero(ITree nodo);
+void imprimir_intervalo(ITree nodo);
 
 void pretty_print(ITree nodo);
 
