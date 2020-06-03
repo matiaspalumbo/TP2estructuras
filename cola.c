@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <math.h>
 
+/* Archivo con la implementación de la estructura cola. */
+
 
 Cola cola_crear() {
   Cola cola = malloc(sizeof(struct _Cola));
