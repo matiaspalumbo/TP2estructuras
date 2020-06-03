@@ -70,6 +70,8 @@ void interface() {
   while  (estado != Salir) {
     switch(estado) {
       case RecorridoBFS:
+        itree_recorrer_bfs(arbol, imprimir_intervalo);
+        puts("");
       break;
       case RecorridoDFS:
         itree_recorrer_dfs(arbol, imprimir_intervalo);
