@@ -41,7 +41,7 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
         i++;
       } else {
       if (input[i] > 47 && input[i] < 58) {
-        memcpy(buff, &input[((segundoNum) ? 2 : 3)], strlen(input) - ((segundoNum) ? 1 : 2)); 
+        memcpy(buff, &input[(segundoNum) ? 2 : 3], strlen(input) - ((segundoNum) ? 1 : 2)); 
         sscanf(buff, "%lf%[^\n]", ((segundoNum) ? der : izq), input);
         if (j == 3) {
           segundoNum = 1;
@@ -65,9 +65,9 @@ void interface() {
   ITree arbol = itree_crear();
   enum EstadoInput estado;
   double izq, der;
-  do {
-    fgets(input, STR_SIZE, stdin);
-    estado = validar_input(input, &izq, &der);
+  fgets(input, STR_SIZE, stdin);
+  estado = validar_input(input, &izq, &der);
+  while  (estado != Salir) {
     switch(estado) {
       case RecorridoBFS:
       break;
@@ -87,10 +87,12 @@ void interface() {
         else
           puts("Si");
       break;
-      default:;
-        puts("Intervalo no valido.");
+      default:
+        puts("Entrada no válida.");
     }
-  } while  (estado != Salir);
+    fgets(input, STR_SIZE, stdin);
+    estado = validar_input(input, &izq, &der);
+  }
   free(input);
   itree_destruir(arbol);
 }
