@@ -40,13 +40,12 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
         j++;
         i++;
       } else {
-      if (input[i] > 47 && input[i] < 58) {
+      if ((input[i] > 47 && input[i] < 58) || input[i] == 45) {
         memcpy(buff, &input[(segundoNum) ? 2 : 3], strlen(input) - ((segundoNum) ? 1 : 2)); 
         sscanf(buff, "%lf%[^\n]", ((segundoNum) ? der : izq), input);
-        if (j == 3) {
+        if (j == 3)
           segundoNum = 1;
-          j = 4;
-        } else j = 7;
+        j++;
         i = 0;
       } else
         estado = NoValido;
