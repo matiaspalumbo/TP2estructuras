@@ -57,7 +57,7 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
       } else {
       if ((input[i] > 47 && input[i] < 58) || input[i] == 45) {
         memcpy(buff, &input[(segundoNum) ? 2 : 3], strlen(input) - ((segundoNum) ? 1 : 2)); 
-        sscanf(buff, "%lf%[^\n]", ((segundoNum) ? der : izq), input);
+        sscanf(buff, "%lf%[^\n]\n", ((segundoNum) ? der : izq), input);
         if (j == 3)
           segundoNum = 1;
         j++;
@@ -69,8 +69,6 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
     free(buff);
     if ((estado == Insertar || estado == Eliminar || estado == Intersecar) && (*izq) > (*der))
       estado = IntervaloNoValido;
-    else if (estado == Salir)
-      estado = ComandoVacio;
   }
   return estado;
 }

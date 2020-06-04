@@ -1,7 +1,8 @@
 #ifndef __INTERPRETE_H__
 #define __INTERPRETE_H__
 
-enum EstadoInput {Salir, RecorridoBFS, RecorridoDFS, Insertar, Eliminar, Intersecar, IntervaloNoValido, ComandoNoValido, ComandoVacio};
+// enum EstadoInput {Salir, RecorridoBFS, RecorridoDFS, Insertar, Eliminar, Intersecar, IntervaloNoValido, ComandoNoValido, ComandoVacio};
+enum EstadoInput {NoValido, Salir, RecorridoBFS, RecorridoDFS, Insertar, Eliminar, Intersecar};
 
 // typedef struct _Estados {
   // enum EstadoInput estado;
