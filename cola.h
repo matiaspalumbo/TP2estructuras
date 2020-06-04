@@ -4,11 +4,9 @@
 #include <stddef.h>
 #include "itree.h"
 
-/* Implementación de la estructura Cola usando nodos simplemente enlazados donde 
-el tipo de dato es un Arbol de Intervalos, y una estructura auxiliar con el primer 
-y último elemento. */
-/* primero: indica el índice de la posición del primer elemento de la cola, es decir, la posición del elemento a eliminar cuando se invoque desencolar; 
-ultimo: indica el índice de la posición de último elemento de la cola, ie, si se invoca encolar, el elemento debe ser insertado en el casillero siguiente al que indica la variable. */
+/* Archivo de cabecera de la implementación de la estructura Cola usando 
+nodos simplemente enlazados donde el tipo de dato es un Arbol de Intervalos, 
+y una estructura auxiliar con el primer y último elemento. */
 
 
 typedef struct _CNodo {
@@ -20,6 +18,9 @@ typedef struct _Cola {
   CNodo *primero;
   CNodo *ultimo;
 } *Cola;
+/* primero: indica el índice de la posición del primer elemento de la cola, es decir, la posición del elemento a eliminar cuando se invoque desencolar; 
+ultimo: indica el índice de la posición de último elemento de la cola, ie, si se invoca encolar, el elemento debe ser insertado en el casillero siguiente al que indica la variable. */
+
 
 
 // Crea una nueva cola.
