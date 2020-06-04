@@ -25,32 +25,6 @@ int itree_empty(ITree nodo) {
   return nodo == NULL;
 }
 
-
-// ITree itree_insertar(ITree nodo, int dato) {
-//   ITree nuevoNodo = malloc(sizeof(ITNodo));
-//   nuevoNodo->dato = dato;
-//   nuevoNodo->altura = itree_altura(nodo);
-//   nuevoNodo->left = NULL;
-//   nuevoNodo->right = NULL;
-//   if (itree_empty(nodo)) {
-//     nodo = nuevoNodo;
-//   } else {
-//     ITree temp = nodo, *direccion = (temp->dato > dato) ? temp->left : temp->right;
-//     nuevoNodo->altura++;
-//     while (direccion) {
-//       nuevoNodo->altura++;
-//       temp = direccion;
-//       direccion = (temp->dato > dato) ? temp->left : temp->right;
-//     }
-//     if (temp->dato > dato)
-//       temp->left = nuevoNodo;
-//     else
-//       temp->right = nuevoNodo;
-//   }
-
-//   return nodo;
-// }
-
 double maximo(double n1, double n2) {
   return n1 < n2 ? n2 : n1;
 }
@@ -103,15 +77,12 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
     nodo = malloc(sizeof(ITNodo));
     nodo->izq = izq;
     nodo->der = der;
-    nodo->left = NULL;
-    nodo->right = NULL;
     nodo->altura = 0;
     nodo->max = nodo->der;
-    // printf("0 %lf, %lf\n", nodo->izq, nodo->der);
     return nodo;
-  } else if (nodo->izq > izq || (nodo->izq == izq && nodo->der != der)) {
+  } else if (nodo->izq > izq || (nodo->izq == izq && nodo->der > der)) {
     nodo->left = itree_insertar(nodo->left, izq, der);
-  } else if (nodo->izq < izq) {
+  } else if (nodo->izq < izq || (nodo->izq == izq && nodo->der < der)) {
     nodo->right = itree_insertar(nodo->right, izq, der);
   } else {
     return nodo;
@@ -121,10 +92,10 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
   nodo->max = calcular_max(nodo);
 
   int balance = itree_balance_factor(nodo);
-  if (balance < -1 && izq > nodo->right->izq) {
+  if (balance < -1 && (izq > nodo->right->izq || (izq == nodo->right->izq && der > nodo->right->der))) {
     // printf("Izq Izq: %lf\n", nodo->izq);
     nodo = rotacion_a_izquierda(nodo);
-  } else if (balance > 1 && izq <= nodo->left->izq) {
+  } else if (balance > 1 && (izq < nodo->left->izq || (izq == nodo->left->izq && der < nodo->left->der))) {
     // printf("Der Der: %lf\n", nodo->izq);
     nodo = rotacion_a_derecha(nodo);
   } else if (balance < -1) {
@@ -160,7 +131,7 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
       free(nodo);
       nodo = hijoNoNULL;
     }
-  } else if (nodo->izq > izq) {
+  } else if (nodo->izq > izq || (nodo->izq == izq && nodo->der > der)) {
     nodo->left = itree_eliminar(nodo->left, izq, der);
   } else { 
     nodo->right = itree_eliminar(nodo->right, izq, der);
@@ -168,7 +139,7 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
   
   if (!nodo)
     return nodo;
-  nodo->altura = 1 + (int) maximo((double) itree_altura(nodo->left), (double) itree_altura(nodo->right));
+  nodo->altura = 1 + (int) maximo((double) itree_altura(nodo->left),(double) itree_altura(nodo->right));
 
   int balance = itree_balance_factor(nodo);
 
@@ -218,7 +189,7 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
 
 
 void imprimir_intervalo(ITree nodo) {
-  if (!itree_empty(nodo)) printf("[%lf, %lf] ", nodo->izq, nodo->der);
+  if (!itree_empty(nodo)) printf("[%.2lf, %.2lf] ", nodo->izq, nodo->der);
 }
 
 void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {

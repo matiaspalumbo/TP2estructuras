@@ -5,6 +5,19 @@
 Arboles AVL ordenados de acuerdo a la primera componente del intervalo. */
 
 
+typedef struct {
+  double izq, der;
+} Intervalo;
+
+// typedef struct _ITNodo {
+//   Intervalo intv;
+//   double max;
+//   int altura;
+//   struct _ITNodo *right;
+//   struct _ITNodo *left;
+// } ITNodo;
+
+
 typedef struct _ITNodo {
   double izq, der, max;
   int altura;

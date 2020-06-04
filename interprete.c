@@ -20,7 +20,7 @@ void imprimir_enum(enum EstadoInput estado) {
 
 
 void validar_char(enum EstadoInput* estado, char input, int c) {
-  char* buff = "  [0, 0]\n";
+  char* plantilla = "  [0, 0]\n";
   if (c == 0) {
     if (input == 'i')
       *estado =  Insertar;
@@ -29,45 +29,47 @@ void validar_char(enum EstadoInput* estado, char input, int c) {
     else
       *estado = (input == '?') ? Intersecar : NoValido;
   }
-  else if (buff[c] != input)
+  else if (plantilla[c] != input)
     *estado = NoValido;
 }
 
 
 enum EstadoInput validar_input(char* input, double* izq, double* der) {
+  enum EstadoInput estado;
   if (strcmp(input, "salir\n") == 0)
-    return Salir;
+    estado = Salir;
   else if (strcmp(input, "bfs\n") == 0)
-    return RecorridoBFS;
+    estado = RecorridoBFS;
   else if (strcmp(input, "dfs\n") == 0)
-    return RecorridoDFS;
+    estado = RecorridoDFS;
   else {
-    char *buff = malloc(sizeof(char)*STR_SIZE);
-    strcpy(buff, input);
-    enum EstadoInput estado = Salir;
+    // char *buff = malloc(sizeof(char)*STR_SIZE);
+    // strcpy(buff, input);
+    estado = Salir;
     int i = 0, j = 0, segundoNum = 0;
     while (estado != NoValido && input[i] != '\0') {
       if (j != 3 && j != 6) {
         validar_char(&estado, input[i], j);
         j++;
         i++;
-      } else {
-      if ((input[i] > 47 && input[i] < 58) || input[i] == 45) {
-        memcpy(buff, &input[(segundoNum) ? 2 : 3], strlen(input) - ((segundoNum) ? 1 : 2)); 
-        sscanf(buff, "%lf%[^\n]", ((segundoNum) ? der : izq), input);
+      } else if ((input[i] > 47 && input[i] < 58) || input[i] == 45) {
+        // memcpy(buff, &input[(segundoNum) ? 2 : 3], strlen(input) - ((segundoNum) ? 1 : 2)); 
+        input = &input[(segundoNum) ? 2 : 3];
+        // sscanf(buff, "%lf%[^\n]", ((segundoNum) ? der : izq), input);
+        sscanf(input, "%lf%[^\n]", ((segundoNum) ? der : izq), input);
         if (j == 3)
           segundoNum = 1;
         j++;
         i = 0;
       } else
         estado = NoValido;
-      }
     }
-    free(buff);
-    if ((estado == Insertar || estado == Eliminar || estado == Intersecar) && (*izq) > (*der))
+    // free(buff);
+    if (estado != NoValido && *izq > *der)
       estado = NoValido;
-    return (estado == Salir) ? NoValido : estado;
+    estado = (estado == Salir) ? NoValido : estado;
   }
+  return estado;
 }
 
 
@@ -95,11 +97,16 @@ void interface() {
       case Eliminar:
         arbol = itree_eliminar(arbol, izq, der);
       break;
-      case Intersecar:
-        if (!itree_intersecar(arbol, izq, der))
+      case Intersecar: {
+        ITree interseccion = itree_intersecar(arbol, izq, der);
+        if (!interseccion)
           puts("No");
-        else
-          puts("Si");
+        else {
+          printf("Si, ");
+          imprimir_intervalo(interseccion);
+          puts("");
+        }
+      }
       break;
       default:
         puts("Entrada no válida.");
