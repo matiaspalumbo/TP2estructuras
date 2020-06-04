@@ -109,9 +109,9 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
     nodo->max = nodo->der;
     // printf("0 %lf, %lf\n", nodo->izq, nodo->der);
     return nodo;
-  } else if (nodo->izq > izq || (nodo->izq == izq && nodo->der != der)) {
+  } else if (nodo->izq > izq || (nodo->izq == izq && nodo->der > der)) {
     nodo->left = itree_insertar(nodo->left, izq, der);
-  } else if (nodo->izq < izq) {
+  } else if (nodo->izq < izq || (nodo->izq == izq && nodo->der < der)) {
     nodo->right = itree_insertar(nodo->right, izq, der);
   } else {
     return nodo;

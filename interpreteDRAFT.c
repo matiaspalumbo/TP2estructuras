@@ -49,7 +49,7 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
     strcpy(buff, input);
     estado = Salir;
     int i = 0, j = 0, segundoNum = 0;
-    while (estado != ComandoNoValido && estado != ComandoVacio && estado != IntervaloNoValido && input[i] != '\0') {
+    while (estado != ComandoNoValido && estado != ComandoVacio && estado != IntervaloNoValido && input[i] != '\0' && input[i] != '\n') {
       if (j != 3 && j != 6) {
         validar_char(&estado, input[i], j);
         j++;
@@ -79,6 +79,7 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
 void interface() {
   char *input = malloc(sizeof(char) * STR_SIZE);
   ITree arbol = itree_crear();
+  ITree nodoInterseccion;
   enum EstadoInput estado;
   double izq, der;
   fgets(input, STR_SIZE, stdin);
@@ -101,10 +102,11 @@ void interface() {
         arbol = itree_eliminar(arbol, izq, der);
       break;
       case Intersecar:
-        if (!itree_intersecar(arbol, izq, der))
+        nodoInterseccion = itree_intersecar(arbol, izq, der);
+        if (!nodoInterseccion)
           puts("No");
         else
-          puts("Si");
+          printf("Si, [%lf, %lf].\n", nodoInterseccion->izq, nodoInterseccion->der);
       break;
       case ComandoNoValido:
         puts("Comando no válido.");
