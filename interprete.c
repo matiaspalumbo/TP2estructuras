@@ -8,7 +8,9 @@
 
 void imprimir_enum(enum EstadoInput estado) {
   switch (estado) {
-    case NoValido: puts("NoValido"); break;
+    case ComandoNoValido: puts("NoValido"); break;
+    case ComandoVacio: puts("ComandoVacio"); break;
+    case IntervaloNoValido: puts("IntervaloNoValido"); break;
     case Salir: puts("Salir"); break;
     case RecorridoBFS: puts("RecorridoBFS"); break;
     case RecorridoDFS: puts("RecorridoDFS"); break;
@@ -27,10 +29,10 @@ void validar_char(enum EstadoInput* estado, char input, int c) {
     else if (input == 'e')
       *estado = Eliminar;
     else
-      *estado = (input == '?') ? Intersecar : NoValido;
+      *estado = (input == '?') ? Intersecar : ComandoNoValido;
   }
   else if (plantilla[c] != input)
-    *estado = NoValido;
+    *estado = ComandoNoValido;
 }
 
 
@@ -43,31 +45,25 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
   else if (strcmp(input, "dfs\n") == 0)
     estado = RecorridoDFS;
   else {
-    // char *buff = malloc(sizeof(char)*STR_SIZE);
-    // strcpy(buff, input);
-    estado = Salir;
+    estado = ComandoVacio;
     int i = 0, j = 0, segundoNum = 0;
-    while (estado != NoValido && input[i] != '\0') {
+    while (estado != ComandoNoValido && input[i] != '\0' && input[i] != '\n') {
       if (j != 3 && j != 6) {
         validar_char(&estado, input[i], j);
         j++;
         i++;
       } else if ((input[i] > 47 && input[i] < 58) || input[i] == 45) {
-        // memcpy(buff, &input[(segundoNum) ? 2 : 3], strlen(input) - ((segundoNum) ? 1 : 2)); 
         input = &input[(segundoNum) ? 2 : 3];
-        // sscanf(buff, "%lf%[^\n]", ((segundoNum) ? der : izq), input);
-        sscanf(input, "%lf%[^\n]", ((segundoNum) ? der : izq), input);
+        sscanf(input, "%lf%[^\n]\n", ((segundoNum) ? der : izq), input);
         if (j == 3)
           segundoNum = 1;
         j++;
         i = 0;
       } else
-        estado = NoValido;
+        estado = ComandoNoValido;
     }
-    // free(buff);
-    if (estado != NoValido && *izq > *der)
-      estado = NoValido;
-    estado = (estado == Salir) ? NoValido : estado;
+    if (estado != ComandoNoValido && estado != ComandoVacio && *izq > *der)
+      estado = IntervaloNoValido;
   }
   return estado;
 }
@@ -76,12 +72,12 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
 void interface() {
   char *input = malloc(sizeof(char) * STR_SIZE);
   ITree arbol = itree_crear();
+  ITree interseccion;
   enum EstadoInput estado;
   double izq, der;
   fgets(input, STR_SIZE, stdin);
   estado = validar_input(input, &izq, &der);
   while  (estado != Salir) {
-    imprimir_enum(estado);
     switch(estado) {
       case RecorridoBFS:
         itree_recorrer_bfs(arbol, imprimir_intervalo);
@@ -97,8 +93,8 @@ void interface() {
       case Eliminar:
         arbol = itree_eliminar(arbol, izq, der);
       break;
-      case Intersecar: {
-        ITree interseccion = itree_intersecar(arbol, izq, der);
+      case Intersecar:
+        interseccion = itree_intersecar(arbol, izq, der);
         if (!interseccion)
           puts("No");
         else {
@@ -106,10 +102,14 @@ void interface() {
           imprimir_intervalo(interseccion);
           puts("");
         }
-      }
       break;
-      default:
+      case ComandoNoValido:
         puts("Entrada no válida.");
+      break;
+      case IntervaloNoValido:
+        puts("El extremo izquierdo....");
+      break;
+      default:;
     }
     fgets(input, STR_SIZE, stdin);
     estado = validar_input(input, &izq, &der);

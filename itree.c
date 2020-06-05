@@ -83,6 +83,8 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
     nodo->der = der;
     nodo->altura = 0;
     nodo->max = nodo->der;
+    // nodo->left = NULL;
+    // nodo->right = NULL;
     return nodo;
   } else if (nodo->izq > izq || (nodo->izq == izq && nodo->der > der)) {
     nodo->left = itree_insertar(nodo->left, izq, der);
@@ -97,17 +99,17 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
 
   int balance = itree_balance_factor(nodo);
   if (balance < -1 && (izq > nodo->right->izq || (izq == nodo->right->izq && der > nodo->right->der))) {
-    // printf("Izq Izq: %lf\n", nodo->izq);
+    printf("Izq Izq: %lf\n", nodo->izq);
     nodo = rotacion_a_izquierda(nodo);
   } else if (balance > 1 && (izq < nodo->left->izq || (izq == nodo->left->izq && der < nodo->left->der))) {
-    // printf("Der Der: %lf\n", nodo->izq);
+    printf("Der Der: %lf\n", nodo->izq);
     nodo = rotacion_a_derecha(nodo);
   } else if (balance < -1) {
-    // printf("Der Izq: %lf\n", nodo->izq);
+    printf("Der Izq: %lf\n", nodo->izq);
     nodo->right = rotacion_a_derecha(nodo->right);
     nodo = rotacion_a_izquierda(nodo);
   } else if (balance > 1) {
-    // printf("Izq Der: %lf\n", nodo->izq);
+    printf("Izq Der: %lf\n", nodo->izq);
     nodo->left = rotacion_a_izquierda(nodo->left);
     nodo = rotacion_a_derecha(nodo);
   }
