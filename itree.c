@@ -110,7 +110,6 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
 }
 
 
-
 // BSTree bstree_eliminar(BSTree arbol, int dato) {
 //   if (!btree_empty(arbol)) {
 //     if (arbol->dato == dato) {
