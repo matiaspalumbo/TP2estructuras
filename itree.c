@@ -114,38 +114,6 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
   return nodo;
 }
 
-
-
-// BSTree bstree_eliminar(BSTree arbol, int dato) {
-//   if (!btree_empty(arbol)) {
-//     if (arbol->dato == dato) {
-//       BSTree nodoAEliminar = arbol;
-//       if ((arbol->left == NULL) && (arbol->right == NULL)) arbol = NULL;
-//       else if ((arbol->left == NULL) && (arbol->right != NULL)) arbol = arbol->right;
-//       else if ((arbol->left != NULL) && (arbol->right == NULL)) arbol = arbol->left;
-//       else {
-//         BSTree nodo = arbol->right;
-//         BSTree padreNodo = NULL; // apunta al padre de 'nodo'
-//         while (nodo->left != NULL) {
-//           padreNodo = nodo;
-//           nodo = nodo->left; 
-//         } // ahora 'nodo' apunta al minimo nodo del subarbol derecho
-//         if (!btree_empty(padreNodo)) {
-//           padreNodo->left = nodo->right;
-//           nodo->right = arbol->right;
-//         }
-//         nodo->left = arbol->left;
-//         arbol = nodo;
-//       }
-//       free(nodoAEliminar);
-//     } else if (arbol->dato < dato) 
-//         arbol->right = bstree_eliminar(arbol->right, dato);
-//       else 
-//         arbol->left = bstree_eliminar(arbol->left, dato);
-//   }
-//   return arbol;
-// }
-
 ITree itree_eliminar(ITree nodo, double izq, double der) {
   if (itree_empty(nodo))
     return nodo;
@@ -155,18 +123,12 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
       nodo = NULL;
     } else if (!itree_empty(nodo->left) && !itree_empty(nodo->right)) {
       ITree minNodoDerecho = nodo->right;
-      ITree padreMinNodo;
       while (!itree_empty(minNodoDerecho->left)) {
-        padreMinNodo = minNodoDerecho;
         minNodoDerecho = minNodoDerecho->left;
       }
       nodo->izq = minNodoDerecho->izq;
       nodo->der = minNodoDerecho->der;
-      // if (!itree_empty(padreMinNodo)) {
-
-      // }
-      nodo->right = itree_eliminar(nodo->right, minNodoDerecho->izq, minNodoDerecho->der); // change
-      // padreMinNodo->left = itree_eliminar(padreMinNodo->left, minNodoDerecho->izq, minNodoDerecho->der);
+      nodo->right = itree_eliminar(nodo->right, minNodoDerecho->izq, minNodoDerecho->der);
     } else {
       ITree hijoNoNULL = (!itree_empty(nodo->left)) ? nodo->left : nodo->right;
       free(nodo);
