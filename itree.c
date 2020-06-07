@@ -176,7 +176,7 @@ void doNothing(ITree nodo) {
 }
 
 void imprimir_intervalo(ITree nodo) {
-  if (!itree_empty(nodo)) printf("[%g, %g] ", nodo->izq, nodo->der);
+  if (!itree_empty(nodo)) printf("[%g, %g] ", nodo->izq, nodo->der); // DEFINIR FORMATO
 }
 
 void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {
