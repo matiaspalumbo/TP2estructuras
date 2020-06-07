@@ -1,7 +1,7 @@
 # Makefile para el Trabajo Practico 2 de Estructuras de Datos y Algoritmos I
 
 # Macros.
-MAIN = main
+INTERPRETE_MAIN = interprete
 ITREE = itree.c
 COLA = cola.c
 INTERPRETE = interprete.c
@@ -9,8 +9,8 @@ FLAGS = -Wall -Wextra -Werror -std=c99 -g
 
 
 # Ejecutable del programa 1.
-$(MAIN) : $(MAIN).c $(COLA:.c=.o) $(ITREE:.c=.o) $(INTERPRETE:.c=.o)
-	gcc $(FLAGS) -o interprete $^
+$(INTERPRETE_MAIN) : main.c $(COLA:.c=.o) $(ITREE:.c=.o) $(INTERPRETE:.c=.o)
+	gcc $(FLAGS) -o $(INTERPRETE_MAIN) $^
 
 # Archivo objeto de la implementación de Árboles de Intervalos.
 $(INTERPRETE:.c=.o) : $(INTERPRETE) $(INTERPRETE:.c=.h) $(ITREE:.c=.h)

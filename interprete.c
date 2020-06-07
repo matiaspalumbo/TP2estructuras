@@ -36,6 +36,7 @@ void validar_char(enum EstadoInput* estado, char input, int c) {
 }
 
 
+// PREGUNTAR QUE PASA CON SSCANF si en por ejemplo sscanf(input, "%c [%lf%[^\n]\n", ((segundoNum) ? der : izq), input) si el string no es de esa forma
 enum EstadoInput validar_input(char* input, double* izq, double* der) {
   enum EstadoInput estado;
   if (strcmp(input, "salir\n") == 0)
@@ -46,27 +47,66 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
     estado = RecorridoDFS;
   else {
     estado = ComandoVacio;
-    int i = 0, j = 0, segundoNum = 0;
-    while (estado != ComandoNoValido && input[i] != '\0' && input[i] != '\n') {
-      if (j != 3 && j != 6) {
-        validar_char(&estado, input[i], j);
-        j++;
-        i++;
-      } else if ((input[i] > 47 && input[i] < 58) || input[i] == 45) {
-        input = &input[(segundoNum) ? 2 : 3];
-        sscanf(input, "%lf%[^\n]\n", ((segundoNum) ? der : izq), input);
-        if (j == 3)
-          segundoNum = 1;
-        j++;
-        i = 0;
-      } else
-        estado = ComandoNoValido;
-    }
-    if (estado != ComandoNoValido && estado != ComandoVacio && *izq > *der)
-      estado = IntervaloNoValido;
+    // int i = 0, j = 0, segundoNum = 0;
+    char comando, espacio1, corcheteOpen, coma, espacio2, corcheteClosed;
+    printf("%d\n", sscanf(input, "%c%c%c%lf%c%c%lf%c\n", &comando, &espacio1, &corcheteOpen, izq, &coma, &espacio2, der, &corcheteClosed));
+    // printf("%c", comando);printf("%c", espacio1);printf("%c", corcheteOpen);printf("%lf", *izq);printf("%c", coma);printf("%c", espacio2);printf("%lf", *der);printf("%c\n", corcheteClosed);
+  //   while (estado != ComandoNoValido && input[i] != '\0' && input[i] != '\n') {
+  //     if (j != 3 && j != 6) {
+  //       validar_char(&estado, input[i], j);
+  //       j++;
+  //       i++;
+  //     } else if ((input[i] > 47 && input[i] < 58) || input[i] == 45) {
+  //       input = &input[(segundoNum) ? 2 : 3];
+        // sscanf(input, "%lf%[^\n]\n", ((segundoNum) ? der : izq), input);
+  //       if (j == 3)
+  //         segundoNum = 1;
+  //       j++;
+  //       i = 0;
+  //     } else
+  //       estado = ComandoNoValido;
+  //   }
+  //   if (estado != ComandoNoValido && estado != ComandoVacio && *izq > *der)
+  //     estado = IntervaloNoValido;
+  // }
+    if (comando == 'i') estado = Insertar;
+    else if (comando == 'e') estado = Eliminar;
+    else estado = Intersecar;
   }
-  return estado;
+return estado;
 }
+
+// enum EstadoInput validar_input(char* input, double* izq, double* der) {
+//   enum EstadoInput estado;
+//   if (strcmp(input, "salir\n") == 0)
+//     estado = Salir;
+//   else if (strcmp(input, "bfs\n") == 0)
+//     estado = RecorridoBFS;
+//   else if (strcmp(input, "dfs\n") == 0)
+//     estado = RecorridoDFS;
+//   else {
+//     estado = ComandoVacio;
+//     int i = 0, j = 0, segundoNum = 0;
+//     while (estado != ComandoNoValido && input[i] != '\0' && input[i] != '\n') {
+//       if (j != 3 && j != 6) {
+//         validar_char(&estado, input[i], j);
+//         j++;
+//         i++;
+//       } else if ((input[i] > 47 && input[i] < 58) || input[i] == 45) {
+//         input = &input[(segundoNum) ? 2 : 3];
+//         sscanf(input, "%lf%[^\n]\n", ((segundoNum) ? der : izq), input);
+//         if (j == 3)
+//           segundoNum = 1;
+//         j++;
+//         i = 0;
+//       } else
+//         estado = ComandoNoValido;
+//     }
+//     if (estado != ComandoNoValido && estado != ComandoVacio && *izq > *der)
+//       estado = IntervaloNoValido;
+//   }
+//   return estado;
+// }
 
 
 void interface() {
@@ -80,14 +120,16 @@ void interface() {
   while  (estado != Salir) {
     switch(estado) {
       case RecorridoBFS:
-        itree_recorrer_bfs(arbol, imprimir_intervalo);
+        // itree_recorrer_bfs(arbol, imprimir_intervalo);
+        itree_recorrer_bfs(arbol, doNothing);
         puts("");
       break;
       case RecorridoDFS:
-        itree_recorrer_dfs(arbol, imprimir_intervalo);
+        itree_recorrer_dfs(arbol, doNothing);
         puts("");
       break;
       case Insertar:
+        pretty_print(arbol);
         arbol = itree_insertar(arbol, izq, der);
       break;
       case Eliminar:

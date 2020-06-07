@@ -54,6 +54,8 @@ void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit);
 visita cada nodo utilizando la funcion pasada. */
 void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit);
 
+void doNothing(ITree nodo);
+
 
 /* Funciones auxiliares sobre arboles de intervalos. */
 
