@@ -8,11 +8,11 @@ INTERPRETE = interprete.c
 FLAGS = -Wall -Wextra -Werror -std=c99 -g
 
 
-# Ejecutable del programa 1.
-$(MAIN) : $(MAIN).c $(COLA:.c=.o) $(ITREE:.c=.o) $(INTERPRETE:.c=.o)
+# Ejecutable del interprete.
+$(MAIN) : $(MAIN).c $(ITREE:.c=.o) $(COLA:.c=.o) $(INTERPRETE:.c=.o)
 	gcc $(FLAGS) -o interprete $^
 
-# Archivo objeto de la implementación de Árboles de Intervalos.
+# Archivo objeto del Interprete.
 $(INTERPRETE:.c=.o) : $(INTERPRETE) $(INTERPRETE:.c=.h) $(ITREE:.c=.h)
 	gcc $(FLAGS) -c $(INTERPRETE)
 

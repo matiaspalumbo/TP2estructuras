@@ -83,8 +83,8 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
     nodo->der = der;
     nodo->altura = 0;
     nodo->max = nodo->der;
-    // nodo->left = NULL;
-    // nodo->right = NULL;
+    nodo->left = NULL;
+    nodo->right = NULL;
     return nodo;
   } else if (nodo->izq > izq || (nodo->izq == izq && nodo->der > der)) {
     nodo->left = itree_insertar(nodo->left, izq, der);
@@ -169,7 +169,7 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
 
 
 void imprimir_intervalo(ITree nodo) {
-  if (!itree_empty(nodo)) printf("[%g, %g] ", nodo->izq, nodo->der);
+  if (!itree_empty(nodo)) printf("[%g, %g] ", nodo->izq, nodo->der); // DEFINIR FORMATO
 }
 
 void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {
