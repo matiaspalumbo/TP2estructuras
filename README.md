@@ -1,5 +1,20 @@
+  if (balance < -1 && (izq > nodo->right->izq || (izq == nodo->right->izq && der > nodo->right->der))) {
+    nodo = rotacion_a_izquierda(nodo);
+  } else if (balance > 1 && (izq < nodo->left->izq || (izq == nodo->left->izq && der < nodo->left->der))) {
+    nodo = rotacion_a_derecha(nodo);
+  } else if (balance < -1) {
+    nodo->right = rotacion_a_derecha(nodo->right);
+    nodo = rotacion_a_izquierda(nodo);
+  } else if (balance > 1) {
+    nodo->left = rotacion_a_izquierda(nodo->left);
+    nodo = rotacion_a_derecha(nodo);
+  }
+
+
+// printf("Izq Der: ");imprimir_intervalo(nodo);puts("");
+
 void imprimir_enum(enum EstadoInput estado) {
-  switch (estado) {
+  switch (estado) { 
     case NoValido: puts("NoValido"); break;
     case Salir: puts("Salir"); break;
     case RecorridoBFS: puts("RecorridoBFS"); break;
