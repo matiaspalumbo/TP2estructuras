@@ -62,7 +62,7 @@ ITree rotacion_a_derecha(ITree nodo) {
   ITree hijo_raiz = nuevaRaiz->right;
   nuevaRaiz->right = nodo;
   /* El hijo derecho del hijo izquierdo del nodo pasará a ser el hijo izquierdo
-  del nodo sobre el cual se realizó la rotación. */       V
+  del nodo sobre el cual se realizó la rotación. */
   nodo->left = hijo_raiz;
   nodo->altura = 1 + (int) maximo(itree_altura(nodo->right), itree_altura(nodo->left));
   nuevaRaiz->altura = 1 + (int) maximo(itree_altura(nuevaRaiz->right), itree_altura(nuevaRaiz->left));
