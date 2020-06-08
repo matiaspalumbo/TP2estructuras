@@ -2,7 +2,7 @@
 #define __INTERPRETE_H__
 
 // enum EstadoInput {Salir, RecorridoBFS, RecorridoDFS, Insertar, Eliminar, Intersecar, IntervaloNoValido, ComandoNoValido, ComandoVacio};
-enum EstadoInput {ComandoNoValido, ComandoVacio, IntervaloNoValido, Salir, RecorridoBFS, RecorridoDFS, Insertar, Eliminar, Intersecar};
+enum EstadoInput {ComandoNoValido, IntervaloNoValido, Salir, RecorridoBFS, RecorridoDFS, Insertar, Eliminar, Intersecar};
 
 // typedef struct _Estados {
   // enum EstadoInput estado;
@@ -10,7 +10,7 @@ enum EstadoInput {ComandoNoValido, ComandoVacio, IntervaloNoValido, Salir, Recor
 // } Estados;
 
 
-void validar_char(enum EstadoInput* estado, char input, int c);
+enum EstadoInput validar_char(enum EstadoInput estado, char input, int c);
 
 enum EstadoInput validar_input(char* input, double* izq, double* der);
 
