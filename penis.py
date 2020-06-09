@@ -9,8 +9,8 @@ tp2 = "i [16, 21];i [8, 9];i [25, 30];i [5, 8];i [15, 23];i [17, 19];i [26, 26];
 
 pyautogui.write("./interprete")
 pyautogui.press("enter")
-for i in range(50):
-    a = randint(-20, 10)
+for i in range(20):
+    a = randint(-20, 35)
     b = randint(10, 50)
     string = "i [" + str(a) +", " + str(b) + "]"
     pyautogui.write(string)

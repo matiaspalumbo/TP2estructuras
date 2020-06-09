@@ -44,7 +44,8 @@ aplicando a cada nodo la funcion visitante dada como parámetro. */
 void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit);
 
 /* Función de tipo FuncionVisitante que dado un elemento de un arbol de 
-intervalos, lo imprime. */
+intervalos, lo imprime. Formato: el intervalo con extremo izquierdo a 
+y extremo derecho b se imprime como "[a, b] ". */
 void imprimir_intervalo(ITree nodo);
 
 

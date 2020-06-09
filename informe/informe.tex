@@ -74,19 +74,23 @@
 
 \section{Elección de estructura de datos}
 
-La estructura de datos utilizada a lo largo del programa es Árboles de Intervalos donde los nodos siguen un orden lexicográfico, e implementados como árboles binarios balanceados.
-La estructura de árbol de intervalos incluye, además de los elementos usuales de la estructura de árbol binario (los punteros \verb|left| y \verb|right|, al subárbol izquierdo y derecho respectivamente), 
-tres variables del tipo de dato \verb|double|, \verb|izq| y \verb|der| que representan los extremos del intervalo y por lo tanto son el dato de la estructura, y \verb|max| que representa el máximo extremo derecho entre los intervalos contenidos en ese subárbol.
-También incluimos una variable del tipo \verb|int| que es la altura del nodo. \par
+La estructura de datos utilizada a lo largo del programa representa Árboles de Intervalos, donde los nodos siguen un orden lexicográfico y son implementados como árboles binarios con altura balanceada.
+La estructura incluye, además de los elementos usuales de la estructura de árbol binario (los punteros \verb|left| y \verb|right|, al subárbol izquierdo y derecho respectivamente), 
+tres variables del tipo de dato \verb|double|:
+\begin{itemize}
+    \item \verb|izq| y \verb|der|, que representan los extremos del intervalo almacenado en el nodo, y
+    \item \verb|max|, que representa el máximo extremo derecho entre los intervalos contenidos en los subárboles del nodo (a lo largo del trabajo se referirá a él como el "máximo" de un nodo).
+\end{itemize}
+También se incluye una variable de tipo \verb|int| que es la altura del nodo.\par
 
-Si bien hace a la generalidad de la estructura del árbol y de la implementación de la estructura el uso de una estructura auxiliar para almacenar el dato, en este caso un intervalo, no lo creimos necesario ya que no nos pareció que agregase una generalidad significante y entorpecia la legibilidad del código.
-Asimismo, la decisión de agregar la variable \verb|altura| a la estructura se basó principalmente en buscar evitar recorrer el árbol completo cada vez que se necesite la altura o el factor de balance de un nodo.\par
+Si bien hace a la generalidad de la implementación de la estructura el uso de una estructura auxiliar para almacenar el dato, en este caso un intervalo, preferimos utilizar los dos doubles por separado por cuestiones de legibilidad del código y ya que no nos pareció que agregase una generalidad significativa en lo que respecta a este trabajo en particular.
+Asimismo, la decisión de agregar la variable \verb|altura| a la estructura se basó principalmente en buscar evitar recorrer el árbol completo cada vez que se necesite la altura o el factor de balance de un nodo. Se aprovechó para reducir operaciones en el cálculo de altura y máximo de un nodo el hecho de que las funciones \verb|itree_insertar| y \verb|itree_eliminar| se llaman recursivamente hasta llegar a la posición del nodo en cuestión, y luego los datos se actualizan desde abajo hacia arriba (desde las hojas hacia la raíz). \par
 
 
 \section{Compilación de los archivos}
 
 La estructuración de los archivos y sus dependencias se encuentra detallada en el archivo \textit{makefile}. 
-Para compilar el programa se utiliza el comando \verb|make interprete| o \verb|make|. A su vez, luego de la compilación, el ejecutable del intérprete se corre mediante el siguientes comando:\par
+Para compilar el programa se utiliza el comando \verb|make interprete| o \verb|make|. A su vez, luego de la compilación, el ejecutable del intérprete se corre mediante el siguiente comando:\par
 
 \noindent \verb|./interprete|. \par
 
@@ -114,16 +118,15 @@ El intérprete para manipular árboles de intervalos desde la entrada estándar 
 \vspace{-0.5cm}
 
 \noindent donde \verb|[a, b]| es un intervalo bien definido ($a \le b$).
-Además, vale aclarar que es case-sensitive, es decir, distingue minúsculas de mayúsculas, y que en los tres primeros casos, los comandos llevan un espacio entre el primer caracter y el corchete que inicia el intervalo, y entre la coma y el segundo número. \par
+Además, vale aclarar que es case-sensitive, y que en los tres primeros casos los comandos llevan un espacio entre el primer caracter y el corchete que inicia el intervalo, y entre la coma y el segundo número. \par
 
-En cuanto a los mensajes de error, hace una distinción que nos pareció significativa. Imprime el mensaje \verb|Intervalo no valido| en caso de que la estructura del comando ingresado sea correcta pero el intervalo ingresado no este correctamente definido (es decir, $a > b$), 
-e imprime el mensaje \verb|Comando no valido| si se ingresa cualquier comando que rompa con las especificaciones antes dadas. \par
+En cuanto a los mensajes de error, hace una distinción que consideramos significativa: se imprime el mensaje "\verb|Intervalo no válido.|" en caso de que la estructura del comando ingresado sea correcta pero el intervalo ingresado no este correctamente definido (es decir, $a > b$), e imprime el mensaje "\verb|Comando no válido.|" si se ingresa cualquier comando que no cumpla con las especificaciones antes dadas. \par
 
 \subsection{Recorrido DFS}
 
-La función que realiza el recorrido primero en profundida del árbol de intervalos fue hecha de forma recursiva, y no iterativa. 
-Esto fue porque la estructura de árbol con la que trabajamos es recursiva y al trabajar con árboles balanceados la altura de los mismos se ve limitada al logaritmo de la cantidad de nodos del árbol, y por lo tanto la recursión en este contexto no representaba dificultades mayores en cuanto al uso de memoria. \par
-Por otro lado, realiza el recorrido DFS siguiendo el orden in-order, pues siendo que el árbol sigue un orden lexicográfico, este orden permite recorrerlo, y consecuentemente imprimirlo, de forma ordenada de manor a mayor. \par
+La función que realiza el recorrido primero en profundidad del árbol de intervalos es de naturaleza recursiva, lo cual no presenta dificultades en cuanto a memoria ya que la altura del árbol (al ser balanceado) se ve limitada al logaritmo de la cantidad de nodos del árbol. \par
+% Esto es debido a que como la estructura de árboles binarios con la que trabajamos es recursiva y al trabajar con árboles balanceados la altura de los mismos se ve limitada al logaritmo de la cantidad de nodos del árbol, y por lo tanto la recursión en este contexto no representaba dificultades mayores en cuanto al uso de memoria. \par
+Por otro lado, realiza el recorrido DFS siguiendo el criterio de ordenamiento in-order, pues éste permite recorrer los elementos del árbol de forma ordenada (de menor a mayor) siguiendo el orden lexicográfico. \par
 
 \subsection{Impresión de los intervalos}
 
