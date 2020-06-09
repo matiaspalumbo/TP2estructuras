@@ -226,16 +226,17 @@ void imprimir_intervalo(ITree nodo) {
 
 ITree itree_intersecar(ITree arbol, double izq, double der) {
   ITree interseccion = NULL;
-  if (!itree_empty(arbol)) { // Criterios de interseción explicados en el informe.
-    if (der < arbol->izq) {
+  if (!itree_empty(arbol)) { 
+    if (der < arbol->izq || izq > arbol->der) { /* El intervalo no se interseca con la raíz */
+      /* Si su subárbol izquierdo es no vacío y si el máximo del subárbol izquierdo 
+      es mayor o igual a izq, entonces es posible que haya intersección en ese subárbol. (*) */
       if (!itree_empty(arbol->left) && izq <= arbol->left->max)
         interseccion = itree_intersecar(arbol->left, izq, der);
-    } else if (izq > arbol->der) {
-      if (!itree_empty(arbol->left) && izq <= arbol->left->max)
-        interseccion = itree_intersecar(arbol->left, izq, der);
-      else if (!itree_empty(arbol->right) && izq <= arbol->right->max)
+      /* (Si izq es mayor que el ext. derecho de la raíz) Si su subárbol derecho es no vacío y si el máximo 
+      del subárbol izquierdo es mayor o igual a izq, entonces es posible que haya intersección en ese subárbol. */
+      if (izq > arbol->der && !itree_empty(arbol->right) && izq <= arbol->right->max)
         interseccion = itree_intersecar(arbol->right, izq, der);
-    } else // Si ninguna de las dos cond. anteriores se cumple, es seguro que se intersecan.
+    } else // En caso contrario, es seguro que se intersecan.
         interseccion = arbol;
   }
   return interseccion;
