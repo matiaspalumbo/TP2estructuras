@@ -4,8 +4,14 @@
 /* Archivo de cabecera de la implementación de Árboles de Intervalos utilizando 
 Arboles AVL ordenados lexicográficamente. */
 
+typedef struct {
+  double izq; // Extremo izquierdo.
+  double der; // Extremo derecho.
+} Intervalo;
+
 typedef struct _ITNodo {
-  double izq, der, max;
+  Intervalo* intv;
+  double max;
   int altura;
   struct _ITNodo *right;
   struct _ITNodo *left;
@@ -26,14 +32,14 @@ void itree_destruir(ITree nodo);
 int itree_empty(ITree nodo);
 
 /* Inserta un elemento en un árbol de intervalos. */
-ITree itree_insertar(ITree arbol, double izq, double der);
+ITree itree_insertar(ITree arbol, Intervalo* intv);
 
 /* Elimina un elemento de un árbol de intervalos. */
-ITree itree_eliminar(ITree nodo, double izq, double der);
+ITree itree_eliminar(ITree nodo, Intervalo* intv);
 
 /* Determina si un intervalo se interseca con alguno de los elementos del 
 árbol y, en caso afirmativo, retorna un puntero al nodo correspondiente. */
-ITree itree_intersecar(ITree arbol, double izq, double der);
+ITree itree_intersecar(ITree arbol, Intervalo* intv);
 
 /* Realiza un recorrido primero en profundidad (DFS) in-order del árbol de intervalos, 
 aplicando a cada nodo la funcion visitante dada como parámetro. */

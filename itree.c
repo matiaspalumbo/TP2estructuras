@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <assert.h>
 #include "itree.h"
 #include "cola.h"
 
@@ -51,12 +50,16 @@ int calcular_altura(ITree nodo) {
 /* Calcula el máximo extremo derecho de un ITree luego de insertar un nodo. */
 double calcular_max(ITree nodo) {
   if (!itree_empty(nodo->left) && !itree_empty(nodo->right))
-    return maximo(maximo(nodo->der, nodo->left->max), nodo->right->max);
+    return maximo(maximo(nodo->intv->der, nodo->left->max), nodo->right->max);
   else if (!itree_empty(nodo->left) || !itree_empty(nodo->right)) {
     ITree nodoNoNULL = (!itree_empty(nodo->left)) ? nodo->left : nodo->right;
-    return maximo(nodo->der, nodoNoNULL->max);
+    return maximo(nodo->intv->der, nodoNoNULL->max);
   } else
-    return nodo->der;
+    return nodo->intv->der;
+}
+
+double comparar_intervalos(Intervalo* intv1, Intervalo* intv2) {
+  return (intv1->izq == intv2->izq) ? intv1->der - intv2->der : intv1->izq - intv2->izq;
 }
 
 
@@ -95,28 +98,29 @@ ITree rotacion_a_izquierda(ITree nodo) {
 
 
 /* itree_insertar inserta un nodo en el lugar correspondiente del ITree, y luego
-realiza las rotaciones correspondientes si el árbol resultante está desbalanceado. */
-ITree itree_insertar(ITree nodo, double izq, double der) {
+realiza las rotaciones adecuadas si el árbol resultante está desbalanceado. */
+ITree itree_insertar(ITree nodo, Intervalo* intv) {
   if (itree_empty(nodo)) { /* Si el nodo es vacío, se debe insertar aquí. */
     nodo = malloc(sizeof(ITNodo));
-    nodo->izq = izq;
-    nodo->der = der;
+    nodo->intv = malloc(sizeof(Intervalo));
+    nodo->intv->izq = intv->izq;
+    nodo->intv->der = intv->der;
     nodo->altura = 0;
-    nodo->max = nodo->der;
+    nodo->max = nodo->intv->der;
     nodo->left = NULL;
     nodo->right = NULL;
     return nodo;
-  } else if (nodo->izq > izq || (nodo->izq == izq && nodo->der > der)) {
+    } else if (comparar_intervalos(intv, nodo->intv) < 0) {
     /* Si el intervalo a insertar es menor según el orden lexicográfico, se insertará en el subárbol izquierdo. */
-    nodo->left = itree_insertar(nodo->left, izq, der);
-  } else if (nodo->izq < izq || (nodo->izq == izq && nodo->der < der)) {
+    nodo->left = itree_insertar(nodo->left, intv);
+    } else if (comparar_intervalos(intv, nodo->intv) > 0) {
     /* Si el intervalo a insertar es mayor según el orden lexicográfico, se insertará en el subárbol derecho. */
-    nodo->right = itree_insertar(nodo->right, izq, der);
+    nodo->right = itree_insertar(nodo->right, intv);
   } else {
     /* Si el intervalo a insertar ya está en el árbol, no se inserta nada. */
     return nodo;
   }
-  /* El programa entrará en esta sección de la función solo si se llamó 
+  /* El programa entrará en esta sección de la función solo si se llamó a sí misma
   recursivamente en el subárbol izquierdo o derecho. Si el intervalo no está presente en el árbol, 
   la recursión desciende hasta alguna hoja del mismo donde se insertará el elemento, y luego 
   las alturas y máximos se irán actualizando desde abajo hacia arriba. */
@@ -127,9 +131,9 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
   if (balance < -1) {
     /* Si el subárbol izquierdo es de menor altura que el derecho, y el nuevo elemento
     es lexicográficamente mayor al subárbol derecho, se debe realizar una rotación simple a izquierda. */
-    if (izq > nodo->right->izq || (izq == nodo->right->izq && der > nodo->right->der))
+    if (comparar_intervalos(intv, nodo->right->intv) > 0)
       nodo = rotacion_a_izquierda(nodo);
-    /* En otro caso, se debe realizar una rotación doble derecha-izquierda. */
+    /* Caso contrario, se debe realizar una rotación doble derecha-izquierda. */
     else {
       nodo->right = rotacion_a_derecha(nodo->right);
       nodo = rotacion_a_izquierda(nodo);
@@ -137,9 +141,9 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
   } else if (balance > 1) {
     /* Si el subárbol derecho es de menor altura que el izquierdo, y el nuevo elemento
     es lexicográficamente menor al subárbol izquierdo, se debe realizar una rotación simple a derecha. */
-    if (izq < nodo->left->izq || (izq == nodo->left->izq && der < nodo->left->der))
+    if (comparar_intervalos(intv, nodo->left->intv) < 0)
       nodo = rotacion_a_derecha(nodo);
-    /* En otro caso, se debe realizar una rotación doble izquierda-derecha. */
+    /* Caso contrario, se debe realizar una rotación doble izquierda-derecha. */
     else {
       nodo->left = rotacion_a_izquierda(nodo->left);
       nodo = rotacion_a_derecha(nodo);
@@ -151,13 +155,14 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
 
 /* itree_eliminar elimina un nodo si está presente en el ITree, y luego
 realiza las rotaciones correspondientes si el árbol resultante está desbalanceado. */
-ITree itree_eliminar(ITree nodo, double izq, double der) {
+ITree itree_eliminar(ITree nodo, Intervalo* intv) {
   if (!itree_empty(nodo)) {
-    if (nodo->izq == izq && nodo->der == der) { // Si el nodo actual es el nodo a eliminar.
+    if (comparar_intervalos(intv, nodo->intv) == 0) { // Si el nodo actual es el nodo a eliminar.
       /* A continuación se distinguen los casos en los que el nodo tiene ninguno, uno o dos hijos no NULL.
-      Los dos primeros casos son triviales en la eliminación del nodo. En el caso donde tiene dos hijos no NULL,
+      Los dos primeros casos son triviales, y en el caso donde tiene dos hijos no NULL,
       el nodo a eliminar se reemplaza por el mínimo nodo del subárbol derecho. */
       if (itree_empty(nodo->left) && itree_empty(nodo->right)) {
+        free(nodo->intv);
         free(nodo);
         nodo = NULL;
       } else if (!itree_empty(nodo->left) && !itree_empty(nodo->right)) {
@@ -165,23 +170,24 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
         while (!itree_empty(minNodoDerecho->left)) {
           minNodoDerecho = minNodoDerecho->left;
         }
-        nodo->izq = minNodoDerecho->izq;
-        nodo->der = minNodoDerecho->der;
-        nodo->right = itree_eliminar(nodo->right, minNodoDerecho->izq, minNodoDerecho->der);
+        nodo->intv->izq = minNodoDerecho->intv->izq;
+        nodo->intv->der = minNodoDerecho->intv->der;
+        nodo->right = itree_eliminar(nodo->right, minNodoDerecho->intv);
       } else {
         ITree hijoNoNULL = (!itree_empty(nodo->left)) ? nodo->left : nodo->right;
+        free(nodo->intv);
         free(nodo);
         nodo = hijoNoNULL;
       }
-    } else if (nodo->izq > izq || (nodo->izq == izq && nodo->der > der)) {
+      } else if (comparar_intervalos(intv, nodo->intv) < 0) {
       /* Si el intervalo a eliminar es menor según el orden lexicográfico, si está
       en el árbol estará en el subárbol izquierdo, por lo que se llama a la función
       recursivamente sobre el subárbol izquierdo. */
-      nodo->left = itree_eliminar(nodo->left, izq, der);
+      nodo->left = itree_eliminar(nodo->left, intv);
     } else {
       /* En caso contrario, si el intervalo a eliminar es un nodo del árbol, 
       estará en el subárbol derecho. */
-      nodo->right = itree_eliminar(nodo->right, izq, der);
+      nodo->right = itree_eliminar(nodo->right, intv);
     }
   }
   if (itree_empty(nodo))
@@ -192,7 +198,7 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
   /* Se calcula el factor balance del árbol, y en caso de desbalanceo se realizan las rotaciones correspondientes. */
   int balance = itree_balance_factor(nodo);
   if (balance < -1) {
-    /* Si el subárbol izquierdo es de menor altura que el derecho, y lo mismo sucede
+    /* Si el subárbol izquierdo es de menor altura que el derecho (y está desbalanceado), y lo mismo sucede
     para los subárboles del subárbol derecho, se debe realizar una rotación simple a izquierda. */
     if (itree_balance_factor(nodo->right) < 0)
       nodo = rotacion_a_izquierda(nodo);
@@ -202,7 +208,7 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
       nodo = rotacion_a_izquierda(nodo);
     }
   } else if (balance > 1) {
-    /* Si el subárbol derecho es de menor altura que el izquierdo, y lo mismo sucede
+    /* Si el subárbol derecho es de menor altura que el izquierdo (y está desbalanceado), y lo mismo sucede
     para los subárboles del subárbol izquierdo, se debe realizar una rotación simple a derecha. */
     if (itree_balance_factor(nodo->left) > 0)
       nodo = rotacion_a_derecha(nodo);
@@ -217,22 +223,22 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
 
 
 void imprimir_intervalo(ITree nodo) {
-  if (!itree_empty(nodo)) printf("[%g, %g] ", nodo->izq, nodo->der);
+  if (!itree_empty(nodo)) printf("[%g, %g] ", nodo->intv->izq, nodo->intv->der);
 }
 
 
-ITree itree_intersecar(ITree arbol, double izq, double der) {
+ITree itree_intersecar(ITree arbol, Intervalo* intv) {
   ITree interseccion = NULL;
   if (!itree_empty(arbol)) { 
-    if (der < arbol->izq || izq > arbol->der) { /* El intervalo no se interseca con la raíz */
+    if (intv->der < arbol->intv->izq || intv->izq > arbol->intv->der) { /* El intervalo no se interseca con la raíz */
       /* Si su subárbol izquierdo es no vacío y si el máximo del subárbol izquierdo 
-      es mayor o igual a izq, entonces es posible que haya intersección en ese subárbol. (*) */
-      if (!itree_empty(arbol->left) && izq <= arbol->left->max)
-        interseccion = itree_intersecar(arbol->left, izq, der);
-      /* (Si izq es mayor que el ext. derecho de la raíz) Si su subárbol derecho es no vacío y si el máximo 
-      del subárbol izquierdo es mayor o igual a izq, entonces es posible que haya intersección en ese subárbol. */
-      if (izq > arbol->der && !itree_empty(arbol->right) && izq <= arbol->right->max)
-        interseccion = itree_intersecar(arbol->right, izq, der);
+      es mayor o igual a intv->izq, entonces es posible que haya intersección en ese subárbol. (*) */
+      if (!itree_empty(arbol->left) && intv->izq <= arbol->left->max)
+        interseccion = itree_intersecar(arbol->left, intv);
+      /* (Si intv->izq es mayor que el ext. derecho de la raíz) Si su subárbol derecho es no vacío y si el máximo 
+      del subárbol izquierdo es mayor o igual a intv->izq, entonces es posible que haya intersección en ese subárbol. */
+      if (intv->izq > arbol->intv->der && !itree_empty(arbol->right) && intv->izq <= arbol->right->max)
+        interseccion = itree_intersecar(arbol->right, intv);
     } else // En caso contrario, es seguro que se intersecan.
         interseccion = arbol;
   }

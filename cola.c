@@ -1,6 +1,5 @@
 #include "cola.h"
 #include <stdlib.h>
-#include <assert.h>
 #include <stdio.h>
 
 /* Archivo con la implementación de la estructura cola. */

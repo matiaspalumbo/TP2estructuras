@@ -79,15 +79,16 @@
  
  La estructura de datos utilizada a lo largo del programa representa Árboles de Intervalos, donde los nodos siguen un orden lexicográfico y son implementados como árboles binarios con altura balanceada.
  La estructura incluye, además de los elementos usuales de la estructura de árbol binario (los punteros \verb|left| y \verb|right|, al subárbol izquierdo y derecho respectivamente), 
- tres variables del tipo de dato \verb|double|:
+ las siguientes variables:
  \begin{itemize}
-     \item \verb|izq| y \verb|der|, que representan los extremos del intervalo almacenado en el nodo, y
-     \item \verb|max|, que representa el máximo extremo derecho entre los intervalos contenidos en los subárboles del nodo (a lo largo del trabajo se referirá a él como el "máximo" de un nodo).
- \end{itemize}
- También se incluye una variable de tipo \verb|int| que es la altura del nodo.\par
+     \item \verb|Intervalo* intv|, una estructura utilizada para almacenar los extremos del intervalo,
+     \item \verb|double max|, que representa el máximo extremo derecho entre los intervalos contenidos en los subárboles del nodo (a lo largo del trabajo se referirá a él como el "máximo" de un nodo), y
+     \item \verb|int altura|, que representa es la altura del nodo.
+ \end{itemize} \par
  
- Si bien hace a la generalidad de la implementación de la estructura el uso de una estructura auxiliar para almacenar el dato, en este caso un intervalo, preferimos utilizar los dos doubles por separado por cuestiones de legibilidad del código y ya que no nos pareció que agregase una generalidad significativa en lo que respecta a este trabajo en particular.
- Asimismo, la decisión de agregar la variable \verb|altura| a la estructura se basó principalmente en buscar evitar recorrer el árbol completo cada vez que se necesite la altura o el factor de balance de un nodo. Se aprovechó para reducir operaciones en el cálculo de altura y máximo de un nodo el hecho de que las funciones \verb|itree_insertar| y \verb|itree_eliminar| se llaman recursivamente hasta llegar a la posición del nodo en cuestión, y luego los datos se actualizan desde abajo hacia arriba (desde las hojas hacia la raíz). \par
+ Si bien en un principio se prefirió no utilizar la estructura auxiliar \verb|intv| y agregar dos doubles a la estructura para almacenar el intervalo, utilizar la estructura hace a la generalidad de la implementación, y modularizando el código adecuadamente se pueden evitar líneas que comprometan la legibilidad del código. \par
+
+ Por otro lado, la decisión de agregar la variable \verb|altura| a la estructura se basó principalmente en buscar evitar recorrer el árbol completo cada vez que se necesite la altura o el factor de balance de un nodo. Se aprovechó para reducir la cantidad de operaciones en estas funciones el hecho de que las funciones \verb|itree_insertar| y \verb|itree_eliminar| se llaman recursivamente hasta llegar a la posición del nodo en cuestión, y luego los datos se actualizan desde abajo hacia arriba (desde las hojas hacia la raíz). \par
  
  
  \section{Compilación de los archivos}
@@ -95,14 +96,14 @@
  La estructuración de los archivos y sus dependencias se encuentra detallada en el archivo \textit{makefile}. 
  Para compilar el programa se utiliza el comando \verb|make interprete| o \verb|make|. A su vez, luego de la compilación, el ejecutable del intérprete se corre mediante el siguiente comando:\par
  
- \noindent \verb|./interprete|. \par
+ \noindent \verb|./interprete| \par
  
  
  \section{Decisiones en el comportamiento}
  
  \subsection{Comandos del intérprete}
  
- El intérprete para manipular árboles de intervalos desde la entrada estándar soporta los siguientes comandos:
+ Para manipular árboles de intervalos desde la entrada estándar, el intérprete soporta los siguientes comandos:
  
  \vspace{-0.5cm}
  \begin{itemize}
@@ -122,19 +123,19 @@
  
  
  \noindent donde \verb|[a, b]| es un intervalo bien definido ($a \le b$).
- Además, vale aclarar que es case-sensitive, y que en los tres primeros casos los comandos llevan un espacio entre el primer caracter y el corchete que inicia el intervalo, y entre la coma y el segundo número. \par
+ Además, como se especificó en el enunciado del trabajo, es case-sensitive, y en los tres primeros casos los comandos llevan un espacio entre el primer caracter y el corchete que inicia el intervalo, y entre la coma y el segundo número. \par
  
- En cuanto a los mensajes de error, hace una distinción que consideramos significativa: se imprime el mensaje "\verb|Intervalo no válido.|" en caso de que la estructura del comando ingresado sea correcta pero el intervalo ingresado no este correctamente definido (es decir, $a > b$), e imprime el mensaje "\verb|Comando no válido.|" si se ingresa cualquier comando que no cumpla con las especificaciones antes dadas. \par
+ En cuanto a los mensajes de error, se hace una distinción que consideramos significativa: se imprime el mensaje "\verb|Intervalo no válido.|" en caso de que la estructura del comando ingresado sea correcta pero el intervalo ingresado no este correctamente definido (es decir, $a > b$), e imprime el mensaje "\verb|Comando no válido.|" si se ingresa cualquier comando que no cumpla con las especificaciones dadas. \par
  
  \subsection{Recorrido DFS}
  
  La función que realiza el recorrido primero en profundidad del árbol de intervalos es de naturaleza recursiva, lo cual no presenta dificultades en cuanto a memoria ya que la altura del árbol, al ser balanceado, se ve limitada al logaritmo de la cantidad de nodos del árbol. \par
 
- Por otro lado, realiza el recorrido DFS siguiendo el criterio de ordenamiento in-order, pues éste permite recorrer los elementos del árbol de forma ordenada (de menor a mayor) siguiendo el orden lexicográfico. \par
+ Por otro lado, decidimos que esta función realice el recorrido DFS siguiendo el criterio de ordenamiento in-order ya que éste permite recorrer los elementos del árbol de forma ordenada (de menor a mayor) siguiendo el orden lexicográfico.\par
  
  \subsection{Impresión de los intervalos}
  
- El formato elegido para la impresión de los intervalos en la salida estádar es \verb|%g|. Este formato imprime la opción más corta entre la notación decimal y científica de un número.  La ventaja que posee esta opción por sobre \verb|%lf| es que, considerando números no muy grandes y con menos de cuatro decimales aproximadamente (un rango de números que podemos considerar como los más usados), \verb|%g| los imprime en la gran mayoría de los casos en notación decimal, sin ceros a la izquierda del último decimal (conocidos como "trailing zeros"). \verb|%lf| imprime los números con un número fijo de decimales luego de la coma, por lo que se prefirió utilizar \verb|%g| para evitar trailing zeros en algunos casos.
+ El formato elegido para la impresión de los intervalos en la salida estándar es \verb|%g|. Este formato imprime la opción más corta entre la notación decimal y científica de un número.  La ventaja que posee esta opción por sobre \verb|%lf| es que, teniendo en cuenta números no muy grandes y con menos de cuatro decimales aproximadamente (un rango de números que podemos considerar como los más usados), \verb|%g| los imprime en la gran mayoría de los casos en notación decimal, sin ceros a la izquierda del último decimal (conocidos como "trailing zeros"). \verb|%lf| imprime los números con un número fijo de decimales luego de la coma, por lo que se prefirió utilizar \verb|%g| para evitar trailing zeros en algunos casos.
  
  \section{Dificultades encontradas}
  

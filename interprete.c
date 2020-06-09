@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "itree.h"
+// #include "itree.h"
 #include "interprete.h"
 
 #define STR_SIZE 60
@@ -23,7 +23,7 @@ enum EstadoInput validar_char(enum EstadoInput estado, char input, int c) {
 }
 
 
-enum EstadoInput validar_input(char* input, double* izq, double* der) {
+enum EstadoInput validar_input(char* input, Intervalo* intv) {
   enum EstadoInput estado;
   if (strcmp(input, "salir\n") == 0)
     estado = Salir;
@@ -34,11 +34,13 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
   else {
     char* charsNoNumeros = malloc(sizeof(char)*6), *finalInput = malloc(sizeof(char)*STR_SIZE);
     int numEscaneos = sscanf(input, "%c%c%c%lf%c%c%lf%c%s", &charsNoNumeros[0], &charsNoNumeros[1], &charsNoNumeros[2],
-                             izq, &charsNoNumeros[3], &charsNoNumeros[4], der, &charsNoNumeros[5], finalInput);
+                             &(intv->izq), &charsNoNumeros[3], &charsNoNumeros[4], &(intv->der), &charsNoNumeros[5], finalInput);
     if (numEscaneos == 8) {
-      for (int i = 0; i < 6 && estado!= ComandoNoValido; i++)
+      estado = Salir;
+      for (int i = 0; i < 6 && estado!= ComandoNoValido; i++) {
         estado = validar_char(estado, charsNoNumeros[i], i);
-      if (estado != ComandoNoValido && *izq > *der)
+      }
+      if (estado != ComandoNoValido && intv->izq > intv->der)
         estado = IntervaloNoValido;
     } else
       estado = ComandoNoValido;
@@ -54,9 +56,10 @@ void interface() {
   ITree arbol = itree_crear();
   ITree interseccion;
   enum EstadoInput estado;
-  double izq, der;
+  // double izq, der;
+  Intervalo* intv = malloc(sizeof(Intervalo));
   fgets(input, STR_SIZE, stdin);
-  estado = validar_input(input, &izq, &der);
+  estado = validar_input(input, intv);
   while  (estado != Salir) {
     switch(estado) {
       case RecorridoBFS:
@@ -68,13 +71,13 @@ void interface() {
         puts("");
       break;
       case Insertar:
-        arbol = itree_insertar(arbol, izq, der);
+        arbol = itree_insertar(arbol, intv);
       break;
       case Eliminar:
-        arbol = itree_eliminar(arbol, izq, der);
+        arbol = itree_eliminar(arbol, intv);
       break;
       case Intersecar:
-        interseccion = itree_intersecar(arbol, izq, der);
+        interseccion = itree_intersecar(arbol, intv);
         if (interseccion) {
           printf("Si, ");
           imprimir_intervalo(interseccion);
@@ -90,9 +93,10 @@ void interface() {
         puts("El extremo izquierdo debe ser menor o igual al extremo derecho.");
     }
     fgets(input, STR_SIZE, stdin);
-    estado = validar_input(input, &izq, &der);
+    estado = validar_input(input, intv);
   }
   free(input);
+  free(intv);
   itree_destruir(arbol);
 }
 
