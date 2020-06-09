@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1591719460 "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.tex" "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.pdf" "informe" 1591719461
-  "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.aux" 1591719461 1044 5e74a91d588c96262b33488219450752 ""
-  "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.tex" 1591719460 7516 f0181478c03b0bd0c49dcb8c05d7d755 ""
-  "/dev/null" 1591719456 0 d41d8cd98f00b204e9800998ecf8427e ""
+["pdflatex"] 1591729311 "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.tex" "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.pdf" "informe" 1591729312
+  "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.aux" 1591729312 1044 5e74a91d588c96262b33488219450752 ""
+  "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.tex" 1591729311 7517 58cf6abb3a16061822fa481e066cb9e0 ""
+  "/dev/null" 1591729307 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -97,11 +97,11 @@
   "/usr/local/texlive/2019/texmf-var/web2c/pdftex/pdflatex.fmt" 1583553097 4259635 9c8570b17bed8f5c90245702be177bee ""
   "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
   "header2.png" 1591660980 63380 93696f933578cafb3bd1cd4d171b3140 ""
-  "informe.aux" 1591719461 1044 5e74a91d588c96262b33488219450752 "pdflatex"
-  "informe.tex" 1591719460 7516 f0181478c03b0bd0c49dcb8c05d7d755 ""
+  "informe.aux" 1591729312 1044 5e74a91d588c96262b33488219450752 "pdflatex"
+  "informe.tex" 1591729311 7517 58cf6abb3a16061822fa481e066cb9e0 ""
   (generated)
-  "informe.aux"
-  "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.pdf"
-  "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.log"
   "informe.pdf"
+  "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.log"
+  "informe.aux"
   "informe.log"
+  "/Users/Mati/Documents/EDyAI/TP2estructuras/informe/informe.pdf"

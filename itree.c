@@ -32,7 +32,7 @@ int itree_altura(ITree nodo) {
 }
 
 
-/* Devuelve factor balance del ITree dado como parámetro,
+/* Devuelve factor de balance del ITree dado como parámetro,
 restando las alturas de sus subárboles izquierdo y derecho. */
 int itree_balance_factor(ITree nodo) {
   return itree_altura(nodo->left) - itree_altura(nodo->right);
