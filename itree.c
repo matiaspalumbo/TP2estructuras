@@ -91,7 +91,7 @@ ITree rotacion_a_izquierda(ITree nodo) {
 /* itree_insertar inserta un nodo en el lugar correspondiente del ITree, y luego
 realiza las rotaciones correspondientes si el árbol resultante está desbalanceado. */
 ITree itree_insertar(ITree nodo, double izq, double der) {
-  if (itree_empty(nodo)) { /* Si el nodo es vacío, se debe insertar aquí */
+  if (itree_empty(nodo)) { /* Si el nodo es vacío, se debe insertar aquí. */
     nodo = malloc(sizeof(ITNodo));
     nodo->izq = izq;
     nodo->der = der;
@@ -104,7 +104,7 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
     /* Si el intervalo a insertar es menor según el orden lexicográfico, se insertará en el subárbol izquierdo. */
     nodo->left = itree_insertar(nodo->left, izq, der);
   } else if (nodo->izq < izq || (nodo->izq == izq && nodo->der < der)) {
-    /* Si el intervalo a insertar es mayor según el orden lexicográfico, se insertará en el subárbol izquierdo. */
+    /* Si el intervalo a insertar es mayor según el orden lexicográfico, se insertará en el subárbol derecho. */
     nodo->right = itree_insertar(nodo->right, izq, der);
   } else {
     /* Si el intervalo a insertar ya está en el árbol, no se inserta nada. */
@@ -213,7 +213,6 @@ void imprimir_intervalo(ITree nodo) {
 }
 
 void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {
-  // printf("recorrer DFS"); imprimir_intervalo(arbol); puts("");
   if (!itree_empty(arbol)) {
     itree_recorrer_dfs(arbol->left, visit);
     visit(arbol);
@@ -222,15 +221,17 @@ void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {
 }
 
 void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit) {
-  // printf("recorrer BFS"); imprimir_intervalo(arbol); puts("");
   if (!itree_empty(arbol)) {
+    /* Crea una cola con la raiz del árbol. */
     Cola queue = cola_crear();
     cola_encolar(queue, arbol);
     ITNodo *temp;
     while (!cola_es_vacia(queue)) {
+      /* Mientras la cola no sea vacía, visito el primer elemento y lo elimino de la cola. */
       temp = cola_primero(queue);
       cola_desencolar(queue);
       visit(temp);
+      /* Luego agrego a la cola los hijos de ese nodo, en el orden que quiero que sean visitados. */
       if (!itree_empty(temp->left)) cola_encolar(queue, temp->left);
       if (!itree_empty(temp->right)) cola_encolar(queue, temp->right);
     }

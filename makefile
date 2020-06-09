@@ -8,9 +8,9 @@ INTERPRETE = interprete.c
 FLAGS = -Wall -Wextra -Werror -std=c99 -g
 
 
-# Ejecutable del interprete.
+# Ejecutable del Interprete.
 $(INTERPRETE_MAIN) : main.c $(COLA:.c=.o) $(ITREE:.c=.o) $(INTERPRETE:.c=.o)
-	gcc $(FLAGS) -o $(INTERPRETE_MAIN) $^
+	gcc $(FLAGS) -o $@ $^
 
 # Archivo objeto del Interprete.
 $(INTERPRETE:.c=.o) : $(INTERPRETE) $(INTERPRETE:.c=.h) $(ITREE:.c=.h)

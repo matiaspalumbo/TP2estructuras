@@ -23,22 +23,25 @@ ITNodo *cola_primero(Cola cola) {
 }
 
 void cola_encolar(Cola cola, ITNodo *dato) {
+  /* Crea el nuevo nodo a encolar con el dato pasado. */
   CNodo *nuevoNodo = malloc(sizeof(struct _CNodo));
   nuevoNodo->dato = dato;
   nuevoNodo->sig = NULL;
+  /* Si la cola es vacía el nuevo nodo va a ser el primero de la cola. En caso de no serlo, 
+  sería el siguiente del último. Una vez ubicado, el nuevo nodo será el último de la cola. */
   if (cola_es_vacia(cola))
-    cola->primero  = nuevoNodo;
+    cola->primero = nuevoNodo;
   else
     cola->ultimo->sig = nuevoNodo;
-  cola->ultimo = nuevoNodo;
+  cola->ultimo = nuevoNodo; 
 }
 
 void cola_desencolar(Cola cola) {
   if (!cola_es_vacia(cola)) {
-    CNodo *nodoAEliminar = cola->primero;
-    if (cola->ultimo == cola->primero) cola->ultimo = NULL;
+    CNodo *nodoAEliminar = cola->primero; /* Selecciono el nodo a eliminar si la cola no es vacía. */
+    if (cola->ultimo == cola->primero) cola->ultimo = NULL; /* Si la cola tiene un solo elemento, queda vacía. */
     cola->primero = cola->primero->sig;
-    free(nodoAEliminar);
+    free(nodoAEliminar); 
   }
 }
 
