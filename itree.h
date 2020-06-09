@@ -43,6 +43,13 @@ void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit);
 aplicando a cada nodo la funcion visitante dada como parámetro. */
 void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit);
 
+/* Devuelve la altura del ITree dado como parámetro.*/
+int itree_altura(ITree nodo) ;
+
+/* Devuelve factor de balance del ITree dado como parámetro,
+restando las alturas de sus subárboles izquierdo y derecho. */
+int itree_balance_factor(ITree nodo);
+
 /* Función de tipo FuncionVisitante que dado un elemento de un arbol de 
 intervalos, lo imprime. Formato: el intervalo con extremo izquierdo a 
 y extremo derecho b se imprime como "[a, b] ". */
