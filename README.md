@@ -1,5 +1,35 @@
+
+
+
+// ITree itree_intersecar(ITree arbol, double izq, double der) {
+//   ITree interseccion = NULL;
+//   if (!itree_empty(arbol)) { 
+//     if (der < arbol->izq) {
+//     /* El intervalo no se interseca con la raíz, pero si su subárbol izquierdo es no vacío
+//     y si el máximo del subárbol izquierdo es mayor o igual a izq, entonces es posible 
+//     que haya intersección en ese subárbol. (*) */
+//       if (!itree_empty(arbol->left) && izq <= arbol->left->max)
+//         interseccion = itree_intersecar(arbol->left, izq, der);
+//     } else if (izq > arbol->der) {
+//       /* Mismo caso que en (*). */
+//       if (!itree_empty(arbol->left) && izq <= arbol->left->max)
+//         interseccion = itree_intersecar(arbol->left, izq, der);
+//       /* El intervalo no se interseca con la raíz, pero si su subárbol derecho es no vacío
+//       y si el máximo del subárbol derecho es mayor o igual a izq, entonces es posible 
+//       que haya intersección en ese subárbol. */
+//       else if (!itree_empty(arbol->right) && izq <= arbol->right->max)
+//         interseccion = itree_intersecar(arbol->right, izq, der);
+//     } else // Si ninguna de las dos cond. anteriores se cumple, es seguro que se intersecan.
+//         interseccion = arbol;
+//   }
+//   return interseccion;
+// }
   
-  
+
+
+
+
+
   if (balance < -1 && (izq > nodo->right->izq || (izq == nodo->right->izq && der > nodo->right->der))) {
     nodo = rotacion_a_izquierda(nodo);
   } else if (balance > 1 && (izq < nodo->left->izq || (izq == nodo->left->izq && der < nodo->left->der))) {
