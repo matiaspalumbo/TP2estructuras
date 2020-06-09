@@ -52,7 +52,6 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
     if (numEscaneos == 8) {
       for (int i = 0; i < 6 && estado!= ComandoNoValido; i++)
         estado = validar_char(estado, charsNoNumeros[i], i);
-      imprimir_enum(estado);
       if (estado != ComandoNoValido && *izq > *der)
         estado = IntervaloNoValido;
     } else
@@ -63,38 +62,6 @@ enum EstadoInput validar_input(char* input, double* izq, double* der) {
 return estado;
 }
 
-// enum EstadoInput validar_input(char* input, double* izq, double* der) {
-//   enum EstadoInput estado;
-//   if (strcmp(input, "salir\n") == 0)
-//     estado = Salir;
-//   else if (strcmp(input, "bfs\n") == 0)
-//     estado = RecorridoBFS;
-//   else if (strcmp(input, "dfs\n") == 0)
-//     estado = RecorridoDFS;
-//   else {
-//     estado = ComandoVacio;
-//     int i = 0, j = 0, segundoNum = 0;
-//     while (estado != ComandoNoValido && input[i] != '\0' && input[i] != '\n') {
-//       if (j != 3 && j != 6) {
-//         validar_char(&estado, input[i], j);
-//         j++;
-//         i++;
-//       } else if ((input[i] > 47 && input[i] < 58) || input[i] == 45) {
-//         input = &input[(segundoNum) ? 2 : 3];
-//         sscanf(input, "%lf%[^\n]\n", ((segundoNum) ? der : izq), input);
-//         if (j == 3)
-//           segundoNum = 1;
-//         j++;
-//         i = 0;
-//       } else
-//         estado = ComandoNoValido;
-//     }
-//     if (estado != ComandoNoValido && estado != ComandoVacio && *izq > *der)
-//       estado = IntervaloNoValido;
-//   }
-//   return estado;
-// }
-
 
 void interface() {
   char *input = malloc(sizeof(char) * STR_SIZE);
@@ -104,7 +71,6 @@ void interface() {
   double izq, der;
   fgets(input, STR_SIZE, stdin);
   estado = validar_input(input, &izq, &der);
-  imprimir_enum(estado);
   while  (estado != Salir) {
     switch(estado) {
       case RecorridoBFS:
@@ -123,12 +89,12 @@ void interface() {
       break;
       case Intersecar:
         interseccion = itree_intersecar(arbol, izq, der);
-        if (!interseccion)
-          puts("No");
-        else {
+        if (interseccion) {
           printf("Si, ");
           imprimir_intervalo(interseccion);
           puts("");
+        } else {
+          puts("No");
         }
       break;
       case ComandoNoValido:
@@ -139,7 +105,6 @@ void interface() {
     }
     fgets(input, STR_SIZE, stdin);
     estado = validar_input(input, &izq, &der);
-    imprimir_enum(estado);
   }
   free(input);
   itree_destruir(arbol);

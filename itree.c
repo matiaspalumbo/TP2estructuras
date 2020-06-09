@@ -11,6 +11,7 @@ ITree itree_crear() {
   return NULL;
 }
 
+
 void itree_destruir(ITree nodo) {
   if (!itree_empty(nodo)) {
     itree_destruir(nodo->left);
@@ -19,15 +20,17 @@ void itree_destruir(ITree nodo) {
   }
 }
 
+
 int itree_empty(ITree nodo) {
   return nodo == NULL;
 }
 
 
-/* Devuelve la altura del ITree dado como parámetro */
+/* Devuelve la altura del ITree dado como parámetro.*/
 int itree_altura(ITree nodo) {
   return (itree_empty(nodo)) ? -1 : nodo->altura;
 }
+
 
 /* Devuelve factor balance del ITree dado como parámetro,
 restando las alturas de sus subárboles izquierdo y derecho. */
@@ -35,15 +38,18 @@ int itree_balance_factor(ITree nodo) {
   return itree_altura(nodo->left) - itree_altura(nodo->right);
 }
 
+
 /* Devuelve el máximo de dos doubles. */
 double maximo(double n1, double n2) {
   return n1 < n2 ? n2 : n1;
 }
 
+
 /* Calcula la altura de un ITree luego de insertar un nodo. */
 int calcular_altura(ITree nodo) {
   return 1 + (int) maximo(itree_altura(nodo->right), itree_altura(nodo->left));
 }
+
 
 /* Calcula el máximo extremo derecho de un ITree luego de insertar un nodo. */
 double calcular_max(ITree nodo) {
@@ -55,6 +61,7 @@ double calcular_max(ITree nodo) {
   } else
     return nodo->der;
 }
+
 
 /* Realiza una rotación a derecha del nodo dado como parámetro. */
 ITree rotacion_a_derecha(ITree nodo) {
@@ -72,6 +79,7 @@ ITree rotacion_a_derecha(ITree nodo) {
   return nuevaRaiz;
 }
 
+
 /* Realiza una rotación a izquierda del nodo dado como parámetro. */
 ITree rotacion_a_izquierda(ITree nodo) {
   ITree nuevaRaiz = nodo->right; // El hijo derecho del nodo pasará a ser la nueva raíz del árbol.
@@ -87,6 +95,7 @@ ITree rotacion_a_izquierda(ITree nodo) {
   nuevaRaiz->max = calcular_max(nuevaRaiz);
   return nuevaRaiz;
 }
+
 
 /* itree_insertar inserta un nodo en el lugar correspondiente del ITree, y luego
 realiza las rotaciones correspondientes si el árbol resultante está desbalanceado. */
@@ -141,6 +150,7 @@ ITree itree_insertar(ITree nodo, double izq, double der) {
   }
   return nodo;
 }
+
 
 /* itree_eliminar elimina un nodo si está presente en el ITree, y luego
 realiza las rotaciones correspondientes si el árbol resultante está desbalanceado. */
@@ -208,12 +218,31 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
   return nodo;
 }
 
+
 void imprimir_intervalo(ITree nodo) {
-  if (!itree_empty(nodo)) printf("[%g, %g] ", nodo->izq, nodo->der); // DEFINIR FORMATO
+  if (!itree_empty(nodo)) printf("[%lf, %lf] ", nodo->izq, nodo->der);
 }
 
+
+ITree itree_intersecar(ITree arbol, double izq, double der) {
+  ITree interseccion = NULL;
+  if (!itree_empty(arbol)) { // Criterios de interseción explicados en el informe.
+    if (der < arbol->izq) {
+      if (!itree_empty(arbol->left) && izq <= arbol->left->max)
+        interseccion = itree_intersecar(arbol->left, izq, der);
+    } else if (izq > arbol->der) {
+      if (!itree_empty(arbol->left) && izq <= arbol->left->max)
+        interseccion = itree_intersecar(arbol->left, izq, der);
+      else if (!itree_empty(arbol->right) && izq <= arbol->right->max)
+        interseccion = itree_intersecar(arbol->right, izq, der);
+    } else // Si ninguna de las dos cond. anteriores se cumple, es seguro que se intersecan.
+        interseccion = arbol;
+  }
+  return interseccion;
+}
+
+
 void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {
-  // printf("recorrer DFS"); imprimir_intervalo(arbol); puts("");
   if (!itree_empty(arbol)) {
     itree_recorrer_dfs(arbol->left, visit);
     visit(arbol);
@@ -221,8 +250,10 @@ void itree_recorrer_dfs(ITree arbol, FuncionVisitante visit) {
   }
 }
 
+
+/* La función itree_recorrer_bfs utiliza colas como estructura auxiliar
+para almacenar los nodos a visitar. */
 void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit) {
-  // printf("recorrer BFS"); imprimir_intervalo(arbol); puts("");
   if (!itree_empty(arbol)) {
     Cola queue = cola_crear();
     cola_encolar(queue, arbol);
@@ -236,41 +267,4 @@ void itree_recorrer_bfs(ITree arbol, FuncionVisitante visit) {
     }
     cola_destruir(queue);
   }
-}
-
-// void pretty_print_aux(ITree nodo, int space) { 
-//   if (itree_empty(nodo)) 
-//     return; 
-//   space += 15; 
-//   pretty_print_aux(nodo->right, space); 
-//   printf("\n"); 
-//   for (int i = 15; i < space; i++) 
-//       printf(" "); 
-//   printf("[%0.0f, %0.0f]{%0.0f}(%d)", nodo->izq, nodo->der, nodo->max, itree_altura(nodo));
-//   pretty_print_aux(nodo->left, space); 
-// } 
-
-// void pretty_print(ITree nodo) {
-//   puts("");puts("");
-//   pretty_print_aux(nodo, 0);
-//   puts("");puts("");puts("");puts("");
-// }
-
-
-ITree itree_intersecar(ITree arbol, double izq, double der) {
-  ITree interseccion = NULL;
-  if (!itree_empty(arbol)) {
-    if (der < arbol->izq) {
-      if (!itree_empty(arbol->left) && izq <= arbol->left->max)
-        interseccion = itree_intersecar(arbol->left, izq, der);
-    } else if (izq > arbol->der) {
-      if (!itree_empty(arbol->left) && izq <= arbol->left->max)
-        interseccion = itree_intersecar(arbol->left, izq, der);
-      else if (!itree_empty(arbol->right) && izq <= arbol->right->max)
-        interseccion = itree_intersecar(arbol->right, izq, der);
-    } else
-        interseccion = arbol;
-  }
-
-  return interseccion;
 }
