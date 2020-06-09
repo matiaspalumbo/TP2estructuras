@@ -78,8 +78,9 @@
 // printf("Izq Der: ");imprimir_intervalo(nodo);puts("");
 
 void imprimir_enum(enum EstadoInput estado) {
-  switch (estado) { 
-    case NoValido: puts("NoValido"); break;
+  switch (estado) {
+    case ComandoNoValido: puts("NoValido"); break;
+    case IntervaloNoValido: puts("IntervaloNoValido"); break;
     case Salir: puts("Salir"); break;
     case RecorridoBFS: puts("RecorridoBFS"); break;
     case RecorridoDFS: puts("RecorridoDFS"); break;

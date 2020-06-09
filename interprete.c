@@ -6,20 +6,6 @@
 
 #define STR_SIZE 60
 
-void imprimir_enum(enum EstadoInput estado) {
-  switch (estado) {
-    case ComandoNoValido: puts("NoValido"); break;
-    // case ComandoVacio: puts("ComandoVacio"); break;
-    case IntervaloNoValido: puts("IntervaloNoValido"); break;
-    case Salir: puts("Salir"); break;
-    case RecorridoBFS: puts("RecorridoBFS"); break;
-    case RecorridoDFS: puts("RecorridoDFS"); break;
-    case Insertar: puts("Insertar"); break;
-    case Eliminar: puts("Eliminar"); break;
-    case Intersecar: puts("Intersecar"); break;
-  }
-}
-
 
 enum EstadoInput validar_char(enum EstadoInput estado, char input, int c) {
   char* plantilla = "  [, ]";

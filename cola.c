@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
-#include <math.h>
 
 /* Archivo con la implementación de la estructura cola. */
 
 
 Cola cola_crear() {
-  Cola cola = malloc(sizeof(struct _Cola));
+  Cola cola = malloc(sizeof(Cola));
   cola->primero = NULL;
   cola->ultimo = NULL;
   return cola;
@@ -23,7 +22,7 @@ ITNodo *cola_primero(Cola cola) {
 }
 
 void cola_encolar(Cola cola, ITNodo *dato) {
-  CNodo *nuevoNodo = malloc(sizeof(struct _CNodo));
+  CNodo *nuevoNodo = malloc(sizeof(CNodo));
   nuevoNodo->dato = dato;
   nuevoNodo->sig = NULL;
   if (cola_es_vacia(cola))

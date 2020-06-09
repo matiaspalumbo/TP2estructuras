@@ -220,7 +220,7 @@ ITree itree_eliminar(ITree nodo, double izq, double der) {
 
 
 void imprimir_intervalo(ITree nodo) {
-  if (!itree_empty(nodo)) printf("[%lf, %lf] ", nodo->izq, nodo->der);
+  if (!itree_empty(nodo)) printf("[%g, %g] ", nodo->izq, nodo->der);
 }
 
 

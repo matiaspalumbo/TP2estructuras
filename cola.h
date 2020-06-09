@@ -1,13 +1,12 @@
-#ifndef __SCOLA_H__
-#define __SCOLA_H__
+#ifndef __COLA_H__
+#define __COLA_H__
 
 #include <stddef.h>
 #include "itree.h"
 
-/* Archivo de cabecera de la implementación de la estructura Cola usando 
-nodos simplemente enlazados donde el tipo de dato es un Arbol de Intervalos, 
-y una estructura auxiliar con el primer y último elemento. */
-
+/* Archivo de cabecera de la implementación de Colas usando 
+nodos simplemente enlazados. El tipo de dato es un ITree, y se 
+utiliza una estructura auxiliar con el primer y último elemento. */
 
 typedef struct _CNodo {
   ITNodo *dato;
@@ -18,15 +17,12 @@ typedef struct _Cola {
   CNodo *primero;
   CNodo *ultimo;
 } *Cola;
-/* primero: indica el índice de la posición del primer elemento de la cola, es decir, la posición del elemento a eliminar cuando se invoque desencolar; 
-ultimo: indica el índice de la posición de último elemento de la cola, ie, si se invoca encolar, el elemento debe ser insertado en el casillero siguiente al que indica la variable. */
-
 
 
 // Crea una nueva cola.
 Cola cola_crear();
 
-// Determina si la cola está vacía.
+// Determina si la cola es vacía.
 int cola_es_vacia(Cola cola);
 
 // Toma una cola y devuelve el elemento en la primera posición.
@@ -42,4 +38,4 @@ void cola_desencolar(Cola cola);
 void cola_destruir(Cola cola);
 
 
-#endif /* __SCOLA_H__ */
+#endif /* __COLA_H__ */
