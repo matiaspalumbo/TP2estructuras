@@ -15,6 +15,7 @@ void itree_destruir(ITree nodo) {
   if (!itree_empty(nodo)) {
     itree_destruir(nodo->left);
     itree_destruir(nodo->right);
+    free(nodo->intv);
     free(nodo);
   }
 }
