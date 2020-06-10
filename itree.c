@@ -58,7 +58,8 @@ double calcular_max(ITree nodo) {
     return nodo->intv->der;
 }
 
-double comparar_intervalos(Intervalo* intv1, Intervalo* intv2) {
+
+double comparar_intervalos(Intervalo *intv1, Intervalo *intv2) {
   return (intv1->izq == intv2->izq) ? intv1->der - intv2->der : intv1->izq - intv2->izq;
 }
 
@@ -99,7 +100,7 @@ ITree rotacion_a_izquierda(ITree nodo) {
 
 /* itree_insertar inserta un nodo en el lugar correspondiente del ITree, y luego
 realiza las rotaciones adecuadas si el árbol resultante está desbalanceado. */
-ITree itree_insertar(ITree nodo, Intervalo* intv) {
+ITree itree_insertar(ITree nodo, Intervalo *intv) {
   if (itree_empty(nodo)) { /* Si el nodo es vacío, se debe insertar aquí. */
     nodo = malloc(sizeof(ITNodo));
     nodo->intv = malloc(sizeof(Intervalo));
@@ -155,7 +156,7 @@ ITree itree_insertar(ITree nodo, Intervalo* intv) {
 
 /* itree_eliminar elimina un nodo si está presente en el ITree, y luego
 realiza las rotaciones correspondientes si el árbol resultante está desbalanceado. */
-ITree itree_eliminar(ITree nodo, Intervalo* intv) {
+ITree itree_eliminar(ITree nodo, Intervalo *intv) {
   if (!itree_empty(nodo)) {
     if (comparar_intervalos(intv, nodo->intv) == 0) { // Si el nodo actual es el nodo a eliminar.
       /* A continuación se distinguen los casos en los que el nodo tiene ninguno, uno o dos hijos no NULL.
@@ -179,7 +180,7 @@ ITree itree_eliminar(ITree nodo, Intervalo* intv) {
         free(nodo);
         nodo = hijoNoNULL;
       }
-      } else if (comparar_intervalos(intv, nodo->intv) < 0) {
+       } else if (comparar_intervalos(intv, nodo->intv) < 0) {
       /* Si el intervalo a eliminar es menor según el orden lexicográfico, si está
       en el árbol estará en el subárbol izquierdo, por lo que se llama a la función
       recursivamente sobre el subárbol izquierdo. */
@@ -222,27 +223,27 @@ ITree itree_eliminar(ITree nodo, Intervalo* intv) {
 }
 
 
-void imprimir_intervalo(ITree nodo) {
-  if (!itree_empty(nodo)) printf("[%g, %g] ", nodo->intv->izq, nodo->intv->der);
-}
-
-
-ITree itree_intersecar(ITree arbol, Intervalo* intv) {
+ITree itree_intersecar(ITree arbol, Intervalo *intv) {
   ITree interseccion = NULL;
   if (!itree_empty(arbol)) { 
-    if (intv->der < arbol->intv->izq || intv->izq > arbol->intv->der) { /* El intervalo no se interseca con la raíz */
-      /* Si su subárbol izquierdo es no vacío y si el máximo del subárbol izquierdo 
-      es mayor o igual a intv->izq, entonces es posible que haya intersección en ese subárbol. (*) */
+    if (intv->der < arbol->intv->izq || intv->izq > arbol->intv->der) { /* El intervalo no se interseca con la raíz. */
+      /* Si su subárbol izquierdo es no vacío y si el máximo del subárbol izquierdo es mayor o igual 
+      al extremo izquierdo del intervalo, entonces es seguro que habrá intersección en ese subárbol. (*) */
       if (!itree_empty(arbol->left) && intv->izq <= arbol->left->max)
         interseccion = itree_intersecar(arbol->left, intv);
       /* (Si intv->izq es mayor que el ext. derecho de la raíz) Si su subárbol derecho es no vacío y si el máximo 
-      del subárbol izquierdo es mayor o igual a intv->izq, entonces es posible que haya intersección en ese subárbol. */
-      if (intv->izq > arbol->intv->der && !itree_empty(arbol->right) && intv->izq <= arbol->right->max)
+      del subárbol derecho es mayor o igual a intv->izq, entonces es posible que haya intersección en ese subárbol. */
+      else if (intv->izq > arbol->intv->der && !itree_empty(arbol->right) && intv->izq <= arbol->right->max)
         interseccion = itree_intersecar(arbol->right, intv);
-    } else // En caso contrario, es seguro que se intersecan.
+    } else // En caso contrario, se interseca con el intervalo de la raíz.
         interseccion = arbol;
   }
   return interseccion;
+}
+
+
+void imprimir_intervalo(ITree nodo) {
+  if (!itree_empty(nodo)) printf("[%g, %g] ", nodo->intv->izq, nodo->intv->der);
 }
 
 

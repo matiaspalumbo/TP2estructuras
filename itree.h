@@ -32,14 +32,14 @@ void itree_destruir(ITree nodo);
 int itree_empty(ITree nodo);
 
 /* Inserta un elemento en un árbol de intervalos. */
-ITree itree_insertar(ITree arbol, Intervalo* intv);
+ITree itree_insertar(ITree arbol, Intervalo *intv);
 
 /* Elimina un elemento de un árbol de intervalos. */
-ITree itree_eliminar(ITree nodo, Intervalo* intv);
+ITree itree_eliminar(ITree nodo, Intervalo *intv);
 
 /* Determina si un intervalo se interseca con alguno de los elementos del 
 árbol y, en caso afirmativo, retorna un puntero al nodo correspondiente. */
-ITree itree_intersecar(ITree arbol, Intervalo* intv);
+ITree itree_intersecar(ITree arbol, Intervalo *intv);
 
 /* Realiza un recorrido primero en profundidad (DFS) in-order del árbol de intervalos, 
 aplicando a cada nodo la funcion visitante dada como parámetro. */

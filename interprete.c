@@ -1,7 +1,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-// #include "itree.h"
 #include "interprete.h"
 
 #define STR_SIZE 60
@@ -23,7 +22,7 @@ enum EstadoInput validar_char(enum EstadoInput estado, char input, int c) {
 }
 
 
-enum EstadoInput validar_input(char* input, Intervalo* intv) {
+enum EstadoInput validar_input(char* input, Intervalo *intv) {
   enum EstadoInput estado;
   if (strcmp(input, "salir\n") == 0)
     estado = Salir;

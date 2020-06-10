@@ -1,7 +1,6 @@
 # Makefile para el Trabajo Practico 2 de Estructuras de Datos y Algoritmos I
 
 # Macros.
-INTERPRETE_MAIN = interprete
 ITREE = itree.c
 COLA = cola.c
 INTERPRETE = interprete.c
@@ -9,7 +8,7 @@ FLAGS = -Wall -Wextra -Werror -std=c99 -g
 
 
 # Ejecutable del Interprete.
-$(INTERPRETE_MAIN) : main.c $(COLA:.c=.o) $(ITREE:.c=.o) $(INTERPRETE:.c=.o)
+interprete : main.c $(COLA:.c=.o) $(ITREE:.c=.o) $(INTERPRETE:.c=.o)
 	gcc $(FLAGS) -o $@ $^
 
 # Archivo objeto del Interprete.

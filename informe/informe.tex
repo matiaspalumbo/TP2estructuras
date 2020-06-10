@@ -65,8 +65,8 @@
         \large Universidad Nacional de Rosario \par
         \noindent\large 2020
     \end{center}
- \end{titlepage}
- \ \par
+\end{titlepage}
+\ \par
 
 
  \noindent A continuación, se detallan las elecciones en general y particularidades que nos resultaron relevantes en la resolución del Trabajo Práctico 2.\par
@@ -81,9 +81,9 @@
  La estructura incluye, además de los elementos usuales de la estructura de árbol binario (los punteros \verb|left| y \verb|right|, al subárbol izquierdo y derecho respectivamente), 
  las siguientes variables:
  \begin{itemize}
-     \item \verb|Intervalo* intv|, una estructura utilizada para almacenar los extremos del intervalo,
+     \item \verb|Intervalo *intv|, una estructura utilizada para almacenar los extremos del intervalo,
      \item \verb|double max|, que representa el máximo extremo derecho entre los intervalos contenidos en los subárboles del nodo (a lo largo del trabajo se referirá a él como el "máximo" de un nodo), y
-     \item \verb|int altura|, que representa es la altura del nodo.
+     \item \verb|int altura|, que es la altura del nodo.
  \end{itemize} \par
  
  Si bien en un principio se prefirió no utilizar la estructura auxiliar \verb|intv| y agregar dos doubles a la estructura para almacenar el intervalo, utilizar la estructura hace a la generalidad de la implementación, y modularizando el código adecuadamente se pueden evitar líneas que comprometan la legibilidad del código. \par
@@ -121,7 +121,6 @@
  \end{itemize}
  \vspace{-0.5cm}
  
- 
  \noindent donde \verb|[a, b]| es un intervalo bien definido ($a \le b$).
  Además, como se especificó en el enunciado del trabajo, es case-sensitive, y en los tres primeros casos los comandos llevan un espacio entre el primer caracter y el corchete que inicia el intervalo, y entre la coma y el segundo número. \par
  
@@ -139,9 +138,10 @@
  
  \section{Dificultades encontradas}
  
- Cómo leer por la entrada estándar; por qué usamos fgets.
- 
- 
+ La mayor dificultad con la que nos encontramos podría decirse que fue decidir qué función utilizar para leer de la entrada estándar. Si bien leer con formato no era una opción, pues no había forma de unificar en un único formato todos los posibles comandos, la primera opción fue la función \verb|scanf| pero la misma presenta inconsistencias leyendo espacios y por lo tanto fue descartada. Terminamos utilizando la función \verb|fgets| con el parametro \verb|stdin|, que solucionaba ese problema. \par
+
+ Luego, en los casos en los que el comando no es una palabra, teniamos que parsear ese input para poder interpretarlo. Para ello utilizamos la función \verb|sscanf|, parseando el string ingresado con los formatos correspondientes para que el comando sea válido y haciendo uso del entero que devuelve dicha fucnión, que representa el número de lecturas exitosas que fueron realizadas. \par
+
  
  \section{Bibliografía}
  \begin{itemize}
