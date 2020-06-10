@@ -11,7 +11,7 @@
 /* validar_char busca verificar si el caracter dado es el esperado en los comandos de
 Insertar, Eliminar e Intersecar. */
 enum EstadoInput validar_char(enum EstadoInput estado, char input, int c) {
-  char* plantilla = "  [, ]"; /* Se utiliza una "plantilla" con los caracteres correctos para comparar. */
+  char *plantilla = "  [, ]"; /* Se utiliza una "plantilla" con los caracteres correctos para comparar. */
   if (c == 0) {
     if (input == 'i')
       return Insertar;
@@ -29,7 +29,7 @@ enum EstadoInput validar_char(enum EstadoInput estado, char input, int c) {
 
 /* validar_input primero determina si el comando indica salir o imprimir el árbol,
 y en caso contrario valida el input según las posibilidades de Insertar, Eliminar e Intersecar. */
-enum EstadoInput validar_input(char* input, Intervalo *intv) {
+enum EstadoInput validar_input(char *input, Intervalo *intv) {
   enum EstadoInput estado;
   if (strcmp(input, "salir\n") == 0)
     estado = Salir;
@@ -38,7 +38,7 @@ enum EstadoInput validar_input(char* input, Intervalo *intv) {
   else if (strcmp(input, "dfs\n") == 0)
     estado = RecorridoDFS;
   else {
-    char *charsNoNumeros = malloc(sizeof(char)*6), *finalInput = malloc(sizeof(char)*STR_SIZE);
+    char *charsNoNumeros = malloc(sizeof(char) * 6), *finalInput = malloc(sizeof(char) * STR_SIZE);
     /* Se escanea el input de acuerdo al formato válido, y si se asignaron correctamente exactamente 8 valores
     (que siempre serán los primeros 8), el formato en cuanto a cantidad de caracteres es correcto y se procede
     a validad caracter por caracter. */
@@ -101,7 +101,7 @@ void interface() {
         puts("Comando no válido.");
       break;
       default:
-        puts("El extremo izquierdo debe ser menor o igual al extremo derecho.");
+        puts("Intervalo no válido.");
     }
     fgets(input, STR_SIZE, stdin);
     estado = validar_input(input, intv);

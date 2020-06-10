@@ -88,7 +88,7 @@
  
  Si bien en un principio se prefirió no utilizar la estructura auxiliar \verb|intv| y agregar dos doubles a la estructura para almacenar el intervalo, utilizar la estructura hace a la generalidad de la implementación, y modularizando el código adecuadamente se pueden evitar líneas que comprometan la legibilidad del código. \par
 
- Por otro lado, la decisión de agregar la variable \verb|altura| a la estructura se basó principalmente en buscar evitar recorrer el árbol completo cada vez que se necesite la altura o el factor de balance de un nodo. Se aprovechó para reducir la cantidad de operaciones en estas funciones el hecho de que las funciones \verb|itree_insertar| y \verb|itree_eliminar| se llaman recursivamente hasta llegar a la posición del nodo en cuestión, y luego los datos se actualizan desde abajo hacia arriba (desde las hojas hacia la raíz). \par
+ Por otro lado, la decisión de agregar la variable \verb|altura| a la estructura se basó principalmente en buscar evitar recorrer el árbol completo cada vez que se necesite la altura o el factor de balance de un nodo. Se aprovechó para reducir la cantidad de operaciones en estas funciones el hecho de que las funciones \verb|itree_insertar| e \verb|itree_eliminar| se llaman recursivamente hasta llegar a la posición del nodo en cuestión, y luego los datos se actualizan desde abajo hacia arriba (desde las hojas hacia la raíz). \par
  
  
  \section{Compilación de los archivos}

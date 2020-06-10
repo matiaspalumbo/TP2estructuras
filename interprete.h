@@ -11,7 +11,7 @@ enum EstadoInput validar_char(enum EstadoInput estado, char input, int c);
 
 /* Dado el input del usuario y un puntero a un intervalo, determina si el input es válido
 y devuelve el aviso e información correspondiente. */
-enum EstadoInput validar_input(char* input, Intervalo *intv);
+enum EstadoInput validar_input(char *input, Intervalo *intv);
 
 /* Función que encapsula el comportamiento del intérprete. */
 void interface();
