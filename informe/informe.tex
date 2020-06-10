@@ -132,23 +132,19 @@
 
  Por otro lado, decidimos que esta función realice el recorrido DFS siguiendo el criterio de ordenamiento in-order ya que éste permite recorrer los elementos del árbol de forma ordenada (de menor a mayor) siguiendo el orden lexicográfico.\par
  
- \subsection{Impresión de los intervalos}
- 
- El formato elegido para la impresión de los intervalos en la salida estándar es \verb|%g|. Este formato imprime la opción más corta entre la notación decimal y científica de un número.  La ventaja que posee esta opción por sobre \verb|%lf| es que, teniendo en cuenta números no muy grandes y con menos de cuatro decimales aproximadamente (un rango de números que podemos considerar como los más usados), \verb|%g| los imprime en la gran mayoría de los casos en notación decimal, sin ceros a la izquierda del último decimal (conocidos como "trailing zeros"). \verb|%lf| imprime los números con un número fijo de decimales luego de la coma, por lo que se prefirió utilizar \verb|%g| para evitar trailing zeros en algunos casos.
- 
  \section{Dificultades encontradas}
  
- La mayor dificultad con la que nos encontramos podría decirse que fue decidir qué función utilizar para leer de la entrada estándar. Si bien leer con formato no era una opción, pues no había forma de unificar en un único formato todos los posibles comandos, la primera opción fue la función \verb|scanf| pero la misma presenta inconsistencias leyendo espacios y por lo tanto fue descartada. Terminamos utilizando la función \verb|fgets| con el parametro \verb|stdin|, que solucionaba ese problema. \par
+ La mayor dificultad con la que nos encontramos podría decirse que fue decidir qué función utilizar para leer de la entrada estándar. La primera opción que consideramos fue \verb|scanf|, pero terminamos decidiendo por escanear el input de la entrada estándar con \verb|fgets| y parsearlo con \verb|sscanf|, de acuerdo al formato establecido de los comandos. Es de gran importancia en la validación del input del programa el hecho de que \verb|sscanf| devuelve un entero con la cantidad de variables a las que les asignó un valor según el formato dado.\par
 
- Luego, en los casos en los que el comando no es una palabra, teniamos que parsear ese input para poder interpretarlo. Para ello utilizamos la función \verb|sscanf|, parseando el string ingresado con los formatos correspondientes para que el comando sea válido y haciendo uso del entero que devuelve dicha fucnión, que representa el número de lecturas exitosas que fueron realizadas. \par
+ Por otro lado, con respecto a la impresión de los intervalos, consideramos las diferentes opciones y el formato que elegimos es \verb|%g|. Este formato imprime la opción más corta entre la notación decimal y científica de un número.  La ventaja que posee por sobre \verb|%lf| es que, teniendo en cuenta números no muy grandes y con menos de cuatro decimales aproximadamente (un rango de números que podemos considerar como los más usados), \verb|%g| los imprime en la gran mayoría de los casos en notación decimal, sin ceros a la izquierda del último decimal (conocidos como "trailing zeros"). \verb|%lf| imprime los números con un número fijo de decimales luego de la coma, por lo que se prefirió utilizar \verb|%g| para evitar trailing zeros en algunos casos.
 
- 
  \section{Bibliografía}
  \begin{itemize}
+     \item \textit{The C Programming Language}, Kernighan \& Ritchie, Sección 7.4 - Formatted Input.
      \item \verb|https://www.geeksforgeeks.org/avl-tree-set-1-insertion/|
      \item \verb|https://www.geeksforgeeks.org/avl-tree-set-2-deletion/|
      \item \verb|https://en.wikipedia.org/wiki/Interval_tree|
-     \item \textit{The C Programming Language}, Kernighan \& Ritchie, Sección 7.4 - \verb|scanf|.
+     \item \verb|https://www.lemoda.net/c/double-decimal-places/|
  \end{itemize}
  
 

@@ -55,7 +55,6 @@ void interface() {
   ITree arbol = itree_crear();
   ITree interseccion;
   enum EstadoInput estado;
-  // double izq, der;
   Intervalo* intv = malloc(sizeof(Intervalo));
   fgets(input, STR_SIZE, stdin);
   estado = validar_input(input, intv);
