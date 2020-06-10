@@ -7,21 +7,59 @@ from random import *
 tp2 = "i [16, 21];i [8, 9];i [25, 30];i [5, 8];i [15, 23];i [17, 19];i [26, 26];i [0, 3];i [6, 10];bfs;dfs;i [-4, 7];bfs;dfs;i [5.5, 9];bfs;dfs;salir"
 
 
+options = ["i", "i", "i", "i", "i" "i", "i", "i", "e", "?", "?", "?", "i", "i", "i"]
+long = len(options)
+almacenados = [(0, 0)]
+
 pyautogui.write("./interprete")
 pyautogui.press("enter")
-for i in range(20):
-    a = randint(-20, 35)
-    b = randint(10, 50)
-    string = "i [" + str(a) +", " + str(b) + "]"
-    pyautogui.write(string)
-    pyautogui.press("enter")
-    if i % 5 == 0:
+
+i = 0
+while i < 50:
+    opcionElegida = options[randint(0, long-1)]
+    a = randint(-50, 150)
+    b = randint(-50, 150)
+    if a <= b and opcionElegida == "i":
+        almacenados.append((a, b))
+        string = "i [" + str(a) +", " + str(b) + "]"
+        pyautogui.write(string)
+        pyautogui.press("enter")
+        i += 1
+    elif a <= b and opcionElegida == "?":
+        string = "? [" + str(a) +", " + str(b) + "]"
+        pyautogui.write(string)
+        pyautogui.press("enter")
+        i += 1
+    elif opcionElegida == "e":
+        j = randint(0, len(almacenados)-1)
+        string = "e [" + str(almacenados[j][0]) +", " + str(almacenados[j][1]) + "]"
+        pyautogui.write(string)
+        pyautogui.press("enter")
+        i += 1
+    else:
+        i += 1
+    if i % 10 == 0 and i != 0:
         pyautogui.write("bfs")
         pyautogui.press("enter")
         pyautogui.write("dfs")
         pyautogui.press("enter")
 pyautogui.write("salir")
 pyautogui.press("enter")
+
+
+# for i in range(20):
+#     a = randint(-20, 35)
+#     b = randint(10, 50)
+#     string = "i [" + str(a) +", " + str(b) + "]"
+#     pyautogui.write(string)
+#     pyautogui.press("enter")
+#     if i % 5 == 0:
+#         pyautogui.write("bfs")
+#         pyautogui.press("enter")
+#         pyautogui.write("dfs")
+#         pyautogui.press("enter")
+# pyautogui.write("salir")
+# pyautogui.press("enter")
     
 
 #for x in tp2.split(";"):

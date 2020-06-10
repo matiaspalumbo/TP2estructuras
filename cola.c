@@ -6,7 +6,7 @@
 
 
 Cola cola_crear() {
-  Cola cola = malloc(sizeof(Cola));
+  Cola cola = malloc(sizeof(struct _Cola));
   cola->primero = NULL;
   cola->ultimo = NULL;
   return cola;
